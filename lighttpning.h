@@ -11,33 +11,29 @@ namespace Lighttpning {
     class Application {
 
     public:
-        void use(const MiddlewareFunc& func) {
-
-            Middleware* prev = nullptr;
+        void use(Middleware& middleware) {
 
             if (middlewares.size() > 0) {
-                prev = middlewares.back();
+                auto prev = middlewares.back();
+                prev->setNext(middleware);
             }
 
-            auto next = new MiddlewareImpl(func);
-            next->setNext(final);
-
-            if (prev) {
-                prev->setNext(*next);
-            }
-
-            middlewares.push_back(next);
+            middlewares.push_back(&middleware);
         }
 
-        void request() {
+        void use(const MiddlewareFunc& func) {
+            auto middleware = new MiddlewareImpl(func);
+            return use(*middleware);
+        }
+
+        void request(HttpContext& context) {
             if (middlewares.size() > 0) {
                 auto first = middlewares.front();
-                first->call();
+                first->call(context);
             }
         }
 
     private:
         vector<Middleware *> middlewares;
-        MiddlewareFinal final;
     };
 }

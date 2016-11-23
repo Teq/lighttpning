@@ -14,25 +14,26 @@ int main() {
 //
 //    app.use(router);
 
-    app.use([](const Request& req, Response& res, const Middleware& next) -> void {
+    app.use([](HttpContext& ctx, const Next& next) {
         std::cout << "BEGIN 1" << std::endl;
-        next.call();
+        next();
         std::cout << "END 1" << std::endl;
     });
 
-    app.use([](const Request& req, Response& res, const Middleware& next) -> void {
+    app.use([](HttpContext& ctx, const Next& next) {
         std::cout << "BEGIN 2" << std::endl;
-        next.call();
+        next();
         std::cout << "END 2" << std::endl;
     });
 
-    app.use([](const Request& req, Response& res, const Middleware& next) -> void {
+    app.use([](HttpContext& ctx, const Next& next) {
         std::cout << "BEGIN 3" << std::endl;
-        next.call();
+        next();
         std::cout << "END 3" << std::endl;
     });
 
-    app.request();
+    HttpContext ctx;
+    app.request(ctx);
 
     return 0;
 }

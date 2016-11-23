@@ -16,4 +16,8 @@ namespace Lighttpning {
 
     };
 
+    struct HttpContext {
+        Request request;
+        Response response;
+    };
 }
