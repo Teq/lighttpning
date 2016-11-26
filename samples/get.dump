@@ -1,0 +1,11 @@
+GET / HTTP/1.1
+Host: localhost:3050
+Connection: keep-alive
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate, sdch, br
+Accept-Language: ru,en-US;q=0.8,en;q=0.6
+Cookie: connect.sid=s%3A_WfnWoWIY46FrGOl9vWyg9UYn3Di5PmU.eXCI%2FrFO%2Fm8LBgt05GatnMtrm2QHwMzKHKnYCWNBkk4
+

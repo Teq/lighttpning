@@ -1,0 +1,18 @@
+
+[ ] Implement HTTP header parser (std::string, boost::regex, w/o optimization)
+    [ ] Request line
+    [ ] Headers
+    [ ] Query string
+    [ ] Connection (keep-alive, close)
+    [ ] Cookies (?)
+[ ] Write test for all kinds of HTTP requests (methods, header combinations) ensure that parser is working
+    [ ] OPTIONS
+    [ ] GET
+    [ ] HEAD
+    [ ] POST
+    [ ] PUT
+    [ ] PATCH
+    [ ] DELETE
+    [ ] TRACE
+    [ ] CONNECT
+[ ] Think about the way how to pass request body to middleware (streams?)

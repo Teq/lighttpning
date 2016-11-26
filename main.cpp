@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "lighttpning.h"
 
 using namespace Lighttpning;
@@ -32,8 +33,17 @@ int main() {
         std::cout << "END 3" << std::endl;
     });
 
-    HttpContext ctx;
-    app.request(ctx);
+    char c;
+    RequestParser parser;
+    std::ifstream sample("../samples/get.dump");
+    while (sample.get(c)) {
+        std::cout << c;
+        auto ctx = parser.putchar(c);
+        if (ctx) {
+            app.request(*ctx);
+        }
+
+    }
 
     return 0;
 }
