@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "lighttpning.h"
+#include "application.h"
+#include "putchar_adapter.h"
 
 using namespace Lighttpning;
 
@@ -34,7 +35,7 @@ int main() {
     });
 
     char c;
-    RequestParser parser;
+    PutcharAdapter parser;
     std::ifstream sample("../samples/get.dump");
     while (sample.get(c)) {
         std::cout << c;
