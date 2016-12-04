@@ -46,7 +46,7 @@ namespace Lighttpning {
                 line.clear();
             }
 
-        } else if (c != '\r') { // just skip CR (RFC allows)
+        } else if (c != '\r') { // just skip CR (RFC allows that)
             line += c;
         }
 
@@ -57,14 +57,18 @@ namespace Lighttpning {
 
     void PutcharAdapter::parseLine(HttpContext& ctx, const std::string& line) {
 
+        std::smatch match;
+
         if (ctx.request.method == Request::Method::UNKNOWN) {
 
             // request line
-            std::smatch match;
+
             if (std::regex_match(line, match, request_line_regex) && match.size() == 4) {
+
                 ctx.request.method = method_map.at(match[1].str());
                 ctx.request.path = match[2].str();
                 ctx.request.httpVer = match[3].str();
+
             } else {
                 throw new std::invalid_argument("Invalid request line");
             }
@@ -73,8 +77,19 @@ namespace Lighttpning {
 
             // header line
 
+            if (std::regex_match(line, match, header_line_regex) && match.size() == 3) {
 
+                auto name = match[1].str();
+                auto value = match[2].str();
+                ctx.request.headers.insert({ name, value });
+
+            } else {
+
+                // multi-line header
+
+            }
         }
+
     }
 
 }

@@ -4,6 +4,9 @@
 
 namespace Lighttpning {
 
+    /**
+     * Internal class which represents a middleware
+     */
     class Middleware {
     public:
         virtual ~Middleware() { }
@@ -37,13 +40,13 @@ namespace Lighttpning {
         HttpContext& context;
     };
 
-    using MiddlewareFunc = void (*)(HttpContext& ctx, const Next& next);
+    using MiddlewareFunction = void (*)(HttpContext& ctx, const Next& next);
 
     class MiddlewareImpl : public Middleware {
     public:
 
-        MiddlewareImpl(const MiddlewareFunc& middlewareFunc)
-                : func(middlewareFunc),
+        MiddlewareImpl(const MiddlewareFunction& middlewareFunction)
+                : func(middlewareFunction),
                   next(&final) { }
 
         virtual void call(HttpContext& context) const {
@@ -57,6 +60,6 @@ namespace Lighttpning {
 
     private:
         const Middleware* next = nullptr;
-        const MiddlewareFunc& func;
+        const MiddlewareFunction& func;
     };
 }

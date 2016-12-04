@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 
 namespace Lighttpning {
 
@@ -21,6 +22,7 @@ namespace Lighttpning {
         std::string path;
         std::string httpVer;
         std::string query;
+        std::unordered_map<std::string, std::string> headers;
     };
 
     struct Response {

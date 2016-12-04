@@ -11,6 +11,11 @@ namespace Lighttpning {
     class Application {
 
     public:
+
+        /**
+         * Add given middleware to pipeline
+         * @param middleware Middleware
+         */
         void use(Middleware& middleware) {
 
             if (middlewares.size() > 0) {
@@ -21,8 +26,12 @@ namespace Lighttpning {
             middlewares.push_back(&middleware);
         }
 
-        void use(const MiddlewareFunc& func) {
-            auto middleware = new MiddlewareImpl(func);
+        /**
+         * Add given middleware function to pipeline
+         * @param middlewareFunction Middleware function
+         */
+        void use(const MiddlewareFunction& middlewareFunction) {
+            auto middleware = new MiddlewareImpl(middlewareFunction);
             return use(*middleware);
         }
 
