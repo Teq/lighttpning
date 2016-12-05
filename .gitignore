@@ -1,4 +1,6 @@
 .idea/
 .vscode/
-build/
+.kdev*/
+build*/
 cmake-*/
+lighttpning.kdev*

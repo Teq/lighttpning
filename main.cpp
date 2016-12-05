@@ -1,50 +1,38 @@
-#include <iostream>
 #include <fstream>
-#include "application.h"
-#include "putchar_adapter.h"
 
-using namespace Lighttpning;
+#include "src/application.h"
+#include "src/router.h"
+#include "src/http/stream_connection.h"
+
+using namespace lighttpning;
 
 int main() {
-
+    
     Application app;
 
-//    Router router;
-//    router.get("/", [](const Request& req, Response& res, const Middleware& next) -> void {
-//        next.call();
-//    });
-//
-//    app.use(router);
-
-    app.use([](HttpContext& ctx, const Next& next) {
-        std::cout << "BEGIN 1" << std::endl;
+    app.use([](Request& req, Response& res, const Next& next) {
+        std::cout << "BEGIN [pre]" << std::endl;
         next();
-        std::cout << "END 1" << std::endl;
+        std::cout << "END [pre]" << std::endl;
     });
 
-    app.use([](HttpContext& ctx, const Next& next) {
-        std::cout << "BEGIN 2" << std::endl;
+//     Router router;
+//     router.use(Request::Method::GET, "/stat", [](Request& req, Response& res, const Next& next) {
+//         std::cout << "BEGIN [stat]" << std::endl;
+//         next();
+//         std::cout << "END [stat]" << std::endl;
+//     });
+//     app.use(router);
+
+    app.use([](Request& req, Response& res, const Next& next) {
+        std::cout << "BEGIN [post]" << std::endl;
         next();
-        std::cout << "END 2" << std::endl;
+        std::cout << "END [post]" << std::endl;
     });
 
-    app.use([](HttpContext& ctx, const Next& next) {
-        std::cout << "BEGIN 3" << std::endl;
-        next();
-        std::cout << "END 3" << std::endl;
-    });
-
-    char c;
-    PutcharAdapter parser;
-    std::ifstream sample("../samples/get.dump");
-    while (sample.get(c)) {
-        std::cout << c;
-        auto ctx = parser.putchar(c);
-        if (ctx) {
-            app.request(*ctx);
-        }
-
-    }
+    std::fstream sample("../samples/get.dump");
+    StreamConnection conn(sample, sample);
+    app.handle(conn);
 
     return 0;
 }
