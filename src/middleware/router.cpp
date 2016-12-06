@@ -2,12 +2,12 @@
 
 namespace lighttpning {
 
-    void Router::call(Request& request, Response& response) {
-        
+    void Router::call(Request& request, Response& response) const {
+
     }
-    
+
     void Router::setNext(const Middleware& middleware) {
-        
+
     }
-    
+
 }

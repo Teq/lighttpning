@@ -1,7 +1,7 @@
 #include <fstream>
 
 #include "src/application.h"
-#include "src/router.h"
+#include "src/middleware/router.h"
 #include "src/http/stream_connection.h"
 
 using namespace lighttpning;
@@ -12,17 +12,27 @@ int main() {
 
     app.use([](Request& req, Response& res, const Next& next) {
         std::cout << "BEGIN [pre]" << std::endl;
+        auto asd = req.getMethod();
         next();
         std::cout << "END [pre]" << std::endl;
     });
 
-//     Router router;
-//     router.use(Request::Method::GET, "/stat", [](Request& req, Response& res, const Next& next) {
-//         std::cout << "BEGIN [stat]" << std::endl;
-//         next();
-//         std::cout << "END [stat]" << std::endl;
-//     });
-//     app.use(router);
+//    Router router;
+//    router.match(Request::Method::GET, "/stat").use([](Request& req, Response& res, const Next& next) {
+//        std::cout << "BEGIN [stat]" << std::endl;
+//        next();
+//        std::cout << "END [stat]" << std::endl;
+//    });
+//    router.match(Request::Method::POST, "/options").use([](Request& req, Response& res, const Next& next) {
+//        std::cout << "BEGIN [opts_step1]" << std::endl;
+//        next();
+//        std::cout << "END [opts_step1]" << std::endl;
+//    }).use([](Request& req, Response& res, const Next& next) {
+//        std::cout << "BEGIN [opts_step2]" << std::endl;
+//        next();
+//        std::cout << "END [opts_step2]" << std::endl;
+//    });
+//    app.use(router);
 
     app.use([](Request& req, Response& res, const Next& next) {
         std::cout << "BEGIN [post]" << std::endl;

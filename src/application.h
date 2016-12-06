@@ -1,18 +1,11 @@
 #pragma once
 
-#include <vector>
-
-#include "middleware.h"
+#include "middleware/middleware_chain.h"
 
 namespace lighttpning {
 
-    class Application {
+    class Application : public MiddlewareChain {
     public:
-        void use(Middleware&);
-        void use(const MiddlewareFunction&);
         void handle(Connection&);
-
-    private:
-        std::vector<Middleware*> middlewares;
     };
 }
