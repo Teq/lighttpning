@@ -9,17 +9,35 @@ namespace lighttpning {
     using MiddlewareFunction = void (*)(Request& req, Response& res, const Next& next);
 
     class MiddlewareNode : public Middleware {
+
     public:
 
         MiddlewareNode(const MiddlewareFunction&);
 
-        void call(Request& request, Response& response) const override;
-        void setNext(const Middleware& middleware) override;
+    protected:
 
-    private:
-        const Middleware* next = nullptr;
+        void call(Request&, Response&) const override;
+
         const MiddlewareFunction& func;
-    };
 
+        class NextImpl : public Next {
+        public:
+            NextImpl (const Middleware& middleware, Request& request, Response& response) :
+                middleware(middleware),
+                request(request),
+                response(response)
+            { }
+
+            void operator() () const override {
+                middleware.call(request, response);
+            }
+
+        private:
+            const Middleware& middleware;
+            Request& request;
+            Response& response;
+        };
+
+    };
 
 }

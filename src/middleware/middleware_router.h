@@ -4,8 +4,7 @@
 
 namespace lighttpning {
 
-    class Router : public Middleware {
+    class MiddlewareRouter : public Middleware {
         void call(Request&, Response&) const override;
-        void setNext(const Middleware&) override;
     };
 }

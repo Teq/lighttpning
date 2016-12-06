@@ -6,17 +6,29 @@
 namespace lighttpning {
 
     class Middleware {
+
+        friend class MiddlewareNode;
+        friend class MiddlewareChain;
+        friend class MiddlewareRouter;
+
     public:
+
         virtual ~Middleware() { }
 
+    protected:
+
+        Middleware();
+
+        void setNext(const Middleware* middleware);
+
         virtual void call(Request& request, Response& response) const = 0;
-        virtual void setNext(const Middleware& middleware) = 0;
+
+        const Middleware* next = nullptr;
     };
 
     class : public Middleware {
-    public:
+    protected:
         void call(Request&, Response&) const override { }
-        void setNext(const Middleware&) override { }
     } FINAL;
 
     class Next {

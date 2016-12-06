@@ -6,6 +6,8 @@ namespace lighttpning {
 
     class Application : public MiddlewareChain {
     public:
+        using MiddlewareChain::use;
+        void use(const MiddlewareFunction&);
         void handle(Connection&);
     };
 }

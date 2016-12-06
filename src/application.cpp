@@ -1,6 +1,4 @@
 #include "application.h"
-#include "http/response.h"
-#include "http/request.h"
 
 namespace lighttpning {
 
@@ -9,5 +7,10 @@ namespace lighttpning {
         Response response(connection);
         call(request, response);
     }
-    
+
+    void Application::use(const MiddlewareFunction& middlewareFunction) {
+        auto middleware = new MiddlewareNode(middlewareFunction);
+        use(*middleware);
+    }
+
 }

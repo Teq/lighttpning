@@ -8,16 +8,16 @@
 namespace lighttpning {
 
     class MiddlewareChain : public Middleware {
+
     public:
-        MiddlewareChain();
+
         void use(Middleware&);
-        void use(const MiddlewareFunction&);
-        void call(Request&, Response&) const override;
-        void setNext(const Middleware&) override;
+
     protected:
+
+        void call(Request&, Response&) const override;
+
         std::vector<Middleware*> chain;
-    private:
-        const Middleware* next = nullptr;
     };
 
 }

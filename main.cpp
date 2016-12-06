@@ -1,7 +1,7 @@
 #include <fstream>
 
 #include "src/application.h"
-#include "src/middleware/router.h"
+#include "src/middleware/middleware_router.h"
 #include "src/http/stream_connection.h"
 
 using namespace lighttpning;
@@ -17,7 +17,7 @@ int main() {
         std::cout << "END [pre]" << std::endl;
     });
 
-//    Router router;
+//    MiddlewareRouter router;
 //    router.match(Request::Method::GET, "/stat").use([](Request& req, Response& res, const Next& next) {
 //        std::cout << "BEGIN [stat]" << std::endl;
 //        next();

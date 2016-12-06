@@ -14,13 +14,14 @@ set(LIGHTTPNING_SRC
     src/http/stream_connection.h
     src/application.cpp
     src/application.h
+    src/middleware/middleware.cpp
     src/middleware/middleware.h
     src/middleware/middleware_chain.cpp
     src/middleware/middleware_chain.h
     src/middleware/middleware_node.cpp
     src/middleware/middleware_node.h
-    src/middleware/router.cpp
-    src/middleware/router.h
+    src/middleware/middleware_router.cpp
+    src/middleware/middleware_router.h
 )
 
 set(SOURCE_FILES main.cpp ${LIGHTTPNING_SRC})
