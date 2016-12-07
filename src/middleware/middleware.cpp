@@ -2,12 +2,15 @@
 
 namespace lighttpning {
 
-    Middleware::Middleware():
-        next(&FINAL)
-    { }
+    static class : public Middleware {
+    protected:
+        void call(Request&, Response&) const override {  }
+    } FINAL_OBJ;
 
-    void Middleware::setNext(const Middleware* middleware) {
-        next = middleware;
-    }
+    Middleware * const Middleware::FINAL = &FINAL_OBJ;
+
+    Middleware::Middleware():
+        next(FINAL)
+    { }
 
 }

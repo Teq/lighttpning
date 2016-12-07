@@ -19,20 +19,11 @@ namespace lighttpning {
 
         Middleware();
 
-        void setNext(const Middleware* middleware);
-
         virtual void call(Request& request, Response& response) const = 0;
 
         const Middleware* next = nullptr;
+
+        static Middleware* const FINAL;
     };
 
-    class : public Middleware {
-    protected:
-        void call(Request&, Response&) const override { }
-    } FINAL;
-
-    class Next {
-    public:
-        virtual void operator() () const = 0;
-    };
 }

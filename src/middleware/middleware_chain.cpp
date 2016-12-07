@@ -6,10 +6,10 @@ namespace lighttpning {
 
         if (chain.size() > 0) {
             auto prev = chain.back();
-            prev->setNext(&middleware);
+            prev->next = &middleware;
         }
 
-        middleware.setNext(next);
+        middleware.next = next;
         chain.push_back(&middleware);
     }
 

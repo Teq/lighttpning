@@ -8,7 +8,7 @@ namespace lighttpning {
         call(request, response);
     }
 
-    void Application::use(const MiddlewareFunction& middlewareFunction) {
+    void Application::use(const MiddlewareNode::Function& middlewareFunction) {
         auto middleware = new MiddlewareNode(middlewareFunction);
         use(*middleware);
     }
