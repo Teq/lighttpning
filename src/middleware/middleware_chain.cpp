@@ -2,21 +2,31 @@
 
 namespace lighttpning {
 
-    void MiddlewareChain::use(Middleware& middleware) {
+    MiddlewareChain::MiddlewareChain(): Middleware([&](Request& request, Response& response, const Next& next) {
+        if (chain.size() > 0) {
+            chain.front()->call(request, response);
+        }
+    }) {}
+
+    MiddlewareChain& MiddlewareChain::use(Middleware& middleware) {
 
         if (chain.size() > 0) {
-            auto prev = chain.back();
-            prev->next = &middleware;
+            auto last = chain.back();
+            last->next = &middleware;
         }
 
         middleware.next = next;
         chain.push_back(&middleware);
+
+        return *this;
     }
 
-    void MiddlewareChain::call(Request& request, Response& response) const {
-        if (chain.size() > 0) {
-            chain.front()->call(request, response);
-        }
+    MiddlewareChain& MiddlewareChain::use(const Middleware::Function& middlewareFunction) {
+
+        auto middleware = new Middleware(middlewareFunction);
+        use(*middleware);
+
+        return *this;
     }
 
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include "../http/request.h"
 #include "../http/response.h"
 
@@ -7,23 +9,26 @@ namespace lighttpning {
 
     class Middleware {
 
-        friend class MiddlewareNode;
         friend class MiddlewareChain;
-        friend class MiddlewareRouter;
 
     public:
 
-        virtual ~Middleware() { }
+        using Next = std::function<void()>;
+
+        using Function = std::function<void(Request&, Response&, const Next&)>;
+
+        Middleware(const Function&);
 
     protected:
 
-        Middleware();
-
-        virtual void call(Request& request, Response& response) const = 0;
+        void call(Request&, Response&) const;
 
         const Middleware* next = nullptr;
 
-        static Middleware* const FINAL;
+    private:
+
+        const Function func;
+
     };
 
 }

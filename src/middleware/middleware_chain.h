@@ -2,8 +2,7 @@
 
 #include <vector>
 
-#include "middleware_node.h"
-#include "middleware_node.h"
+#include "middleware.h"
 
 namespace lighttpning {
 
@@ -11,11 +10,13 @@ namespace lighttpning {
 
     public:
 
-        void use(Middleware&);
+        MiddlewareChain();
+
+        MiddlewareChain& use(Middleware&);
+
+        MiddlewareChain& use(const Middleware::Function&);
 
     protected:
-
-        void call(Request&, Response&) const override;
 
         std::vector<Middleware*> chain;
     };

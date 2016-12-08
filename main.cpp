@@ -5,17 +5,22 @@
 #include "src/http/stream_connection.h"
 
 using namespace lighttpning;
-using Next = MiddlewareNode::Next;
+using Next = Middleware::Next;
 
 int main() {
     
     Application app;
+    MiddlewareChain chain;
 
     app.use([](Request& req, Response& res, const Next& next) {
         std::cout << "BEGIN [1]" << std::endl;
         auto asd = req.getMethod();
         next();
         std::cout << "END [1]" << std::endl;
+    }).use(chain).use([](Request& req, Response& res, const Next& next) {
+        std::cout << "BEGIN [2]" << std::endl;
+        next();
+        std::cout << "END [2]" << std::endl;
     });
 
 //    MiddlewareRouter router;
@@ -36,9 +41,9 @@ int main() {
 //    app.use(router);
 
     app.use([](Request& req, Response& res, const Next& next) {
-        std::cout << "BEGIN [2]" << std::endl;
+        std::cout << "BEGIN [3]" << std::endl;
         next();
-        std::cout << "END [2]" << std::endl;
+        std::cout << "END [3]" << std::endl;
     });
 
     std::fstream sample("../samples/get.dump");
