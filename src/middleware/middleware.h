@@ -1,33 +1,23 @@
 #pragma once
 
-#include <functional>
-
 #include "../http/request.h"
 #include "../http/response.h"
 
 namespace lighttpning {
 
     class Middleware {
-
-        friend class MiddlewareChain;
-
+        
     public:
 
-        using Next = std::function<void()>;
+        virtual ~Middleware() { };
 
-        using Function = std::function<void(Request&, Response&, const Next&)>;
+        virtual void call(Request&, Response&) const = 0;
 
-        Middleware(const Function&);
+        void setNext(const Middleware&);
 
     protected:
 
-        void call(Request&, Response&) const;
-
         const Middleware* next = nullptr;
-
-    private:
-
-        const Function func;
 
     };
 

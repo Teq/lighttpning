@@ -35,7 +35,7 @@ namespace lighttpning {
          */
         Request(ConnectionIn&);
         
-        /**
+        /**`
          * Get HTTP method
          */
         Method getMethod();
@@ -45,7 +45,6 @@ namespace lighttpning {
          * E.g.: "example.com/info/about.html?lang=en"
          */
         std::string getUrl();
-        
         
         /**
          * Get path from request URL
@@ -63,12 +62,15 @@ namespace lighttpning {
          */
         std::unordered_map<std::string, std::string> getHeaders();
         
+        const std::string& getParameter(const std::string& name) const;
+        
     private:
         Method method = Method::UNKNOWN;
         std::string path;
         std::string query;
         std::string httpVer;
         std::unordered_map<std::string, std::string> headers;
+        std::unordered_map<std::string, std::string> parameters;
         ConnectionIn& connection;
     };
 }
