@@ -1,5 +1,7 @@
 #pragma once
 
+#include <regex>
+
 #include "middleware.h"
 #include "middleware_chain.h"
 
@@ -11,9 +13,11 @@ namespace lighttpning {
 
         MiddlewareChain& match(Request::Method method, std::string pattern);
 
-    protected:
-        
         void call(Request&, Response&) const override;
+
+    private:
+
+        static const std::regex paramRegex;
 
     };
 }
