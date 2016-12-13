@@ -33,7 +33,7 @@ int main() {
     });
 
     MiddlewareRouter router;
-    router.route(Request::Method::GET, "/stat/:param1/asd").use([](Request& req, Response& res, const Next& next) {
+    router.route(Request::Method::GET, "/stat/:param1").use([](Request& req, Response& res, const Next& next) {
         std::cout << "BEGIN [stat]" << std::endl;
         auto param1 = req.getParameter("param1");
         next();

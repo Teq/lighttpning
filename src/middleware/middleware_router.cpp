@@ -12,12 +12,10 @@ namespace lighttpning {
     {
         std::smatch match;
         std::string routeRegexString(pattern);
-        auto iterator = routeRegexString.cbegin();
 
-        while (std::regex_search(iterator, routeRegexString.cend(), match, parameterNameRegex)) {
+        while (std::regex_search(routeRegexString, match, parameterNameRegex)) {
             auto parameterName = match[1].str();
             parameters.push_back(parameterName);
-            iterator = match.suffix().first;
             routeRegexString.replace(match[0].first, match[0].second, parameterValuePattern);
         }
 
