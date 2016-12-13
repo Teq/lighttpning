@@ -1,6 +1,8 @@
 #pragma once
 
 #include <regex>
+#include <unordered_map>
+#include <vector>
 
 #include "middleware.h"
 #include "middleware_chain.h"
@@ -11,13 +13,34 @@ namespace lighttpning {
 
     public:
 
-        MiddlewareChain& match(Request::Method method, std::string pattern);
+        ~MiddlewareRouter();
+
+        MiddlewareChain& route(Request::Method method, const std::string &pattern);
 
         void call(Request&, Response&) const override;
 
     private:
 
-        static const std::regex paramRegex;
+        class Route {
+
+        public:
+
+            Route(Request::Method, const std::string& pattern);
+
+            bool match(Request&) const;
+
+        private:
+
+            Request::Method routeMethod;
+            std::regex routeRegex;
+            std::vector<std::string> parameters;
+
+            static const std::regex parameterNameRegex;
+            static const std::string parameterValuePattern;
+
+        };
+
+        std::unordered_map<Route*, MiddlewareChain*> routes;
 
     };
 }

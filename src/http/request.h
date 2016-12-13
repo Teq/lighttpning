@@ -35,41 +35,18 @@ namespace lighttpning {
          */
         Request(ConnectionIn&);
         
-        /**`
-         * Get HTTP method
-         */
-        Method getMethod();
-        
-        /**
-         * Get complete request URL (incl. host, path and query string)
-         * E.g.: "example.com/info/about.html?lang=en"
-         */
-        std::string getUrl();
-        
-        /**
-         * Get path from request URL
-         * E.g.: "/info/about.html" in "example.com/info/about.html?lang=en"
-         */
-        std::string getPath();
-        
-        /**
-         * Get query string parameters
-         */
-        std::unordered_map<std::string, std::string> getQuery();
-        
-        /**
-         * Get request headers
-         */
-        std::unordered_map<std::string, std::string> getHeaders();
-        
+        Method getMethod() const;
+
+        const std::string& getPath() const;
+
         const std::string& getParameter(const std::string& name) const;
-        
+
+        void setParameter(const std::string& name, const std::string& value);
+
     private:
+
         Method method = Method::UNKNOWN;
         std::string path;
-        std::string query;
-        std::string httpVer;
-        std::unordered_map<std::string, std::string> headers;
         std::unordered_map<std::string, std::string> parameters;
         ConnectionIn& connection;
     };

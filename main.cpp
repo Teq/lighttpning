@@ -33,13 +33,13 @@ int main() {
     });
 
     MiddlewareRouter router;
-    router.match(Request::Method::GET, "/stat/:param1").use([](Request& req, Response& res, const Next& next) {
+    router.route(Request::Method::GET, "/stat/:param1/asd").use([](Request& req, Response& res, const Next& next) {
         std::cout << "BEGIN [stat]" << std::endl;
         auto param1 = req.getParameter("param1");
         next();
         std::cout << "END [stat]" << std::endl;
     });
-    router.match(Request::Method::POST, "/options/:name/:value").use([](Request& req, Response& res, const Next& next) {
+    router.route(Request::Method::POST, "/options/:name/:value").use([](Request& req, Response& res, const Next& next) {
         std::cout << "BEGIN [opts_step1]" << std::endl;
         auto name = req.getParameter("name");
         auto value = req.getParameter("value");
