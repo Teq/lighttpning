@@ -11,6 +11,8 @@ namespace lighttpning {
 
     public:
 
+        ~MiddlewareChain();
+
         MiddlewareChain& use(Middleware&);
 
         MiddlewareChain& use(const MiddlewareFunction::Function&);
@@ -20,6 +22,7 @@ namespace lighttpning {
     private:
 
         std::vector<Middleware*> chain;
+        std::vector<Middleware*> owned;
     };
 
 }

@@ -9,6 +9,7 @@ namespace lighttpning {
     class StreamConnection : public Connection {
     public:
         StreamConnection(std::istream& in, std::ostream& out);
+        StreamConnection(std::iostream& inout);
 
         size_t read(char* buffer, size_t length) override;
         size_t read(const char delimiter, char* buffer, size_t length) override;

@@ -1,65 +1,48 @@
 #include <fstream>
 
-#include "src/application.h"
-#include "src/middleware/middleware_router.h"
+#include "src/lighttpning.h"
 #include "src/http/stream_connection.h"
 
 using namespace lighttpning;
 using Next = MiddlewareFunction::Next;
 
+void handler1(Request& req, Response& res, const Next& next) {
+    std::cout << "BEGIN [GET /leds/:name]" << std::endl;
+    next();
+    std::cout << "END [GET /leds/:name]" << std::endl;
+}
+
+void handler2(Request& req, Response& res, const Next& next) {
+    std::cout << "BEGIN [POST /leds/:name/:state]" << std::endl;
+    next();
+    std::cout << "END [POST /leds/:name/:state]" << std::endl;
+}
+
 int main() {
-    
-    Application app, app2;
-    
-    app.use([](Request& req, Response& res, const Next& next) {
-        std::cout << "BEGIN [1]" << std::endl;
-        auto asd = req.getMethod();
-        next();
-        std::cout << "END [1]" << std::endl;
-    }).use(app2).use([](Request& req, Response& res, const Next& next) {
-        std::cout << "BEGIN [2]" << std::endl;
-        next();
-        std::cout << "END [2]" << std::endl;
-    });
-    
-    app2.use([](Request& req, Response& res, const Next& next) {
-        std::cout << "BEGIN [1a]" << std::endl;
-        next();
-        std::cout << "END [1a]" << std::endl;
-    }).use([](Request& req, Response& res, const Next& next) {
-        std::cout << "BEGIN [1b]" << std::endl;
-        next();
-        std::cout << "END [1b]" << std::endl;
-    });
 
+    Lighttpning app;
     MiddlewareRouter router;
-    router.route(Request::Method::GET, "/stat/:param1").use([](Request& req, Response& res, const Next& next) {
-        std::cout << "BEGIN [stat]" << std::endl;
-        auto param1 = req.getParameter("param1");
+
+    router.route(Request::Method::GET, "/leds/:name").use(handler1);
+    router.route(Request::Method::POST, "/leds/:name/:state").use(handler2);
+//     router.route(Request::Method::POST, "/leds/:name/:state", [](MiddlewareChain& chain) {
+//         chain.use(handler2);
+//     });
+
+    app.use([](Request& req, Response& res, const Next& next) {
+        std::cout << "BEGIN" << std::endl;
         next();
-        std::cout << "END [stat]" << std::endl;
-    });
-    router.route(Request::Method::POST, "/leds/:name/:state").use([](Request& req, Response& res, const Next& next) {
-        std::cout << "BEGIN [opts_step1]" << std::endl;
-        auto name = req.getParameter("name");
-        auto state = req.getParameter("state");
-        next();
-        std::cout << "END [opts_step1]" << std::endl;
-    }).use([](Request& req, Response& res, const Next& next) {
-        std::cout << "BEGIN [opts_step2]" << std::endl;
-        next();
-        std::cout << "END [opts_step2]" << std::endl;
+        std::cout << "END" << std::endl;
+    }).use(router).use([](Request&, Response&, const Next&) {
+        std::cout << "FINAL" << std::endl;
     });
 
-    app.use(router).use([](Request& req, Response& res, const Next& next) {
-        std::cout << "BEGIN [3]" << std::endl;
-        next();
-        std::cout << "END [3]" << std::endl;
-    });
-
-    std::fstream sample("../samples/post.dump");
-    StreamConnection conn(sample, sample);
-    app.handle(conn);
+    std::fstream getStream("../samples/get.dump");
+    std::fstream postStream("../samples/post.dump");
+    StreamConnection getConn(getStream);
+    StreamConnection connPost(postStream);
+    app.handle(getConn);
+    app.handle(connPost);
 
     return 0;
 }

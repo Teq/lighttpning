@@ -3,9 +3,15 @@
 namespace lighttpning {
 
     StreamConnection::StreamConnection(std::istream& in, std::ostream& out):
-        input(in), output(out)
-    { }  
-  
+        input(in),
+        output(out)
+    { }
+
+    StreamConnection::StreamConnection(std::iostream& inout):
+        input(inout),
+        output(inout)
+    { };
+
     size_t StreamConnection::read(char* buffer, size_t length) {
         input.read(buffer, length);
         return input.gcount();

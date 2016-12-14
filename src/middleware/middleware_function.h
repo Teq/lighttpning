@@ -20,7 +20,7 @@ namespace lighttpning {
 
     private:
 
-        const Function func;
+        const Function& func;
 
     };
 

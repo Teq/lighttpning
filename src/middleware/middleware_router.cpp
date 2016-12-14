@@ -50,10 +50,19 @@ namespace lighttpning {
         }
     }
 
-    MiddlewareChain& MiddlewareRouter::route(Request::Method method, const std::string &pattern) {
+    MiddlewareRouter& MiddlewareRouter::route(
+        Request::Method method,
+        const std::string& pattern,
+        const std::function<void(MiddlewareChain&)>& filler
+    ) {
+        filler(route(method, pattern));
+        return *this;
+    }
+
+    MiddlewareChain& MiddlewareRouter::route(Request::Method method, const std::string& pattern) {
         auto route = new Route(method, pattern);
         auto chain = new MiddlewareChain();
-        this->routes.insert({ route, chain });
+        routes.insert({ route, chain });
         return *chain;
     }
 
