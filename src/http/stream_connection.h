@@ -10,15 +10,17 @@ namespace lighttpning {
     public:
         StreamConnection(std::istream& in, std::ostream& out);
 
-        char read(uint16_t timeout) override;
-        size_t read(char *buffer, size_t length, uint16_t timeout) override;
-        size_t read(char untilChar, char *buffer, size_t length, uint16_t timeout) override;
-        void write(char c, uint16_t timeout) override;
-        size_t write(char *buffer, size_t length, uint16_t timeout) override;
+        size_t read(char* buffer, size_t length) override;
+        size_t read(const char delimiter, char* buffer, size_t length) override;
+        bool connected() override;
+
+        size_t write(char* buffer, size_t length) override;
+        void close() override;
 
     private:
         std::istream& input;
         std::ostream& output;
+        bool isConnected = true;
     };
 
 }

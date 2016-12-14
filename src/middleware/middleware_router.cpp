@@ -5,7 +5,7 @@ namespace lighttpning {
     constexpr auto regex_options = std::regex::ECMAScript;
 
     const std::regex MiddlewareRouter::Route::parameterNameRegex(":(\\w+)", regex_options);
-    const std::string MiddlewareRouter::Route::parameterValuePattern("\\w+");
+    const std::string MiddlewareRouter::Route::parameterValuePattern("(\\w+)");
 
     MiddlewareRouter::Route::Route(Request::Method method, const std::string& pattern):
         routeMethod(method)
@@ -27,14 +27,13 @@ namespace lighttpning {
         auto result = false;
 
         std::smatch match;
-        auto path = request.getPath();
 
-        if (request.getMethod() == routeMethod && std::regex_match(path, match, routeRegex)) {
+        if (request.getMethod() == routeMethod && std::regex_match(request.getPath(), match, routeRegex)) {
 
             uint8_t parameterIndex = 1;
 
             for (auto parameterName : parameters) {
-                auto parameterValue = match[parameterIndex++];
+                auto parameterValue = match[parameterIndex++].str();
                 request.setParameter(parameterName, parameterValue);
             }
 

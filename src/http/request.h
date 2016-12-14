@@ -2,6 +2,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <regex>
 
 #include "connection.h"
 
@@ -35,9 +36,9 @@ namespace lighttpning {
          */
         Request(ConnectionIn&);
         
-        Method getMethod() const;
+        Method getMethod();
 
-        const std::string& getPath() const;
+        const std::string& getPath();
 
         const std::string& getParameter(const std::string& name) const;
 
@@ -45,9 +46,15 @@ namespace lighttpning {
 
     private:
 
+        ConnectionIn& connection;
+        
         Method method = Method::UNKNOWN;
         std::string path;
+        std::string httpVer;
         std::unordered_map<std::string, std::string> parameters;
-        ConnectionIn& connection;
+        
+        static const std::regex requestLineRegex;
+        static const std::regex headerLineRegex;
+        static const std::unordered_map<std::string, Method> methodMap;
     };
 }

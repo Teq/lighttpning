@@ -6,26 +6,28 @@ namespace lighttpning {
         input(in), output(out)
     { }  
   
-    char StreamConnection::read(uint16_t timeout) {
-        char ch;
-        input.get(ch);
-        return ch;
+    size_t StreamConnection::read(char* buffer, size_t length) {
+        input.read(buffer, length);
+        return input.gcount();
     }
 
-    size_t StreamConnection::read(char *buffer, size_t length, uint16_t timeout) {
-        return 0;
+    size_t StreamConnection::read(const char delimiter, char* buffer, size_t length) {
+        input.get(buffer, length, delimiter);
+        size_t count = input.gcount();
+        buffer[count] = delimiter;
+        return count + 1;
     }
 
-    size_t StreamConnection::read(char untilChar, char *buffer, size_t length, uint16_t timeout) {
-        return 0;
+    bool StreamConnection::connected() {
+        return isConnected;
+    }
+    
+    size_t StreamConnection::write(char* buffer, size_t length) {
+        throw std::logic_error("Not implemented");
     }
 
-    void StreamConnection::write(char c, uint16_t timeout) {
-
-    }
-
-    size_t StreamConnection::write(char *buffer, size_t length, uint16_t timeout) {
-        return 0;
+    void StreamConnection::close() {
+        isConnected = false;
     }
 
 }

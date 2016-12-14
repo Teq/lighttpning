@@ -2,6 +2,8 @@
 
 namespace lighttpning {
 
-    Response::Response(const ConnectionOut& out): connection(out) { }
+    Response::Response(const ConnectionOut& out):
+        connection(out)
+    { }
 
 }

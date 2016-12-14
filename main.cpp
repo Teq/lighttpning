@@ -39,10 +39,10 @@ int main() {
         next();
         std::cout << "END [stat]" << std::endl;
     });
-    router.route(Request::Method::POST, "/options/:name/:value").use([](Request& req, Response& res, const Next& next) {
+    router.route(Request::Method::POST, "/leds/:name/:state").use([](Request& req, Response& res, const Next& next) {
         std::cout << "BEGIN [opts_step1]" << std::endl;
         auto name = req.getParameter("name");
-        auto value = req.getParameter("value");
+        auto state = req.getParameter("state");
         next();
         std::cout << "END [opts_step1]" << std::endl;
     }).use([](Request& req, Response& res, const Next& next) {
@@ -57,7 +57,7 @@ int main() {
         std::cout << "END [3]" << std::endl;
     });
 
-    std::fstream sample("../samples/get.dump");
+    std::fstream sample("../samples/post.dump");
     StreamConnection conn(sample, sample);
     app.handle(conn);
 
