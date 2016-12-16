@@ -41,7 +41,7 @@ namespace lighttpning {
                 httpVer = match[3].str();
 
             } else {
-                throw std::invalid_argument("Invalid request line");
+//                 throw std::invalid_argument("Invalid request line");
             }
         }
         

@@ -29,7 +29,7 @@ namespace lighttpning {
     }
     
     size_t StreamConnection::write(char* buffer, size_t length) {
-        throw std::logic_error("Not implemented");
+//         throw std::logic_error("Not implemented");
     }
 
     void StreamConnection::close() {
