@@ -1,14 +1,13 @@
 #pragma once
 
 #include <vector>
-#include <functional>
 
 #include "middleware/middleware_chain.h"
 #include "middleware/middleware_router.h"
 
 namespace lighttpning {
 
-    class Lighttpning : public MiddlewareChain {
+    class Lighttpning : private MiddlewareChain {
 
     public:
 
@@ -16,11 +15,20 @@ namespace lighttpning {
 
         void handle(Connection&);
 
-//         Lighttpning& router(const std::function<void(MiddlewareRouter&)>&);
+        template<typename Function> Lighttpning& router(const Function& filler) {
+            auto router = new MiddlewareRouter();
+            owned.push_back(router);
+            filler(*router);
+            return use(*router);
+        };
 
         Lighttpning& use(Middleware&);
 
-        Lighttpning& use(const MiddlewareFunction::Function&);
+        // TODO: Rename it to "use" (solve overload resolution problem)
+        template<typename Function> Lighttpning& useFunc(const Function& function) {
+            MiddlewareChain::useFunc(function);
+            return *this;
+        };
 
     private:
 

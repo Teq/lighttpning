@@ -19,14 +19,6 @@ namespace lighttpning {
         return *this;
     }
 
-    MiddlewareChain& MiddlewareChain::use(const MiddlewareFunction::Function& middlewareFunction) {
-
-        auto middleware = new MiddlewareFunction(middlewareFunction);
-        owned.push_back(middleware);
-
-        return use(*middleware);
-    }
-
     void MiddlewareChain::call(Request& request, Response& response) const {
         if (chain.size() > 0) {
             chain.back()->setNext(*next);

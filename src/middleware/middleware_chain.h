@@ -15,7 +15,12 @@ namespace lighttpning {
 
         MiddlewareChain& use(Middleware&);
 
-        MiddlewareChain& use(const MiddlewareFunction::Function&);
+        template<typename Function> MiddlewareChain& useFunc(const Function& function) {
+            auto middleware = new MiddlewareFunction<Function>(function);
+            owned.push_back(middleware);
+
+            return use(*middleware);
+        };
 
         void call(Request&, Response&) const override;
 

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(lighttpning)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 set(LIGHTTPNING_SRC
     src/http/connection.h
@@ -18,7 +18,6 @@ set(LIGHTTPNING_SRC
     src/middleware/middleware.h
     src/middleware/middleware_chain.cpp
     src/middleware/middleware_chain.h
-    src/middleware/middleware_function.cpp
     src/middleware/middleware_function.h
     src/middleware/middleware_router.cpp
     src/middleware/middleware_router.h

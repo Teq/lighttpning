@@ -1,22 +1,25 @@
 #pragma once
 
-#include <functional>
-
 #include "middleware.h"
 
 namespace lighttpning {
 
+    template<typename Function>
     class MiddlewareFunction : public Middleware {
 
     public:
 
-        using Next = std::function<void()>;
+        MiddlewareFunction(const Function& middlewareFunction):
+            func(middlewareFunction)
+        { }
 
-        using Function = std::function<void(Request&, Response&, const Next&)>;
-
-        MiddlewareFunction(const Function&);
-
-        void call(Request&, Response&) const override;
+        void call(Request& request, Response& response) const override {
+            func(request, response, [&]() {
+                if (next) {
+                    next->call(request, response);
+                }
+            });
+        }
 
     private:
 

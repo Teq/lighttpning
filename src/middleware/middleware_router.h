@@ -15,22 +15,17 @@ namespace lighttpning {
 
         ~MiddlewareRouter();
 
-//         MiddlewareRouter& route(
-//             Request::Method,
-//             const std::string& pattern,
-//             const std::function<void(MiddlewareChain&)>& filler
-//         );
-
-//         template<typename Functor>
-//         MiddlewareRouter& route(
-//             Request::Method method,
-//             const std::string& pattern,
-//             const Functor&& filler
-//         ) {
+        template<typename Function> MiddlewareRouter& route(
+            Request::Method method,
+            const std::string& pattern,
+            const Function& filler
+        ) {
+//             // TODO: figure out why it doesn't work with temp variable (probably due to lvalue/rvalue stuff..)
 //             auto chain = route(method, pattern);
 //             filler(chain);
-//             return *this;
-//         };
+            filler(route(method, pattern));
+            return *this;
+        };
 
         MiddlewareChain& route(
             Request::Method,
