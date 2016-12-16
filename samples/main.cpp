@@ -1,7 +1,7 @@
 #include <fstream>
 
-#include "src/lighttpning.h"
-#include "src/http/stream_connection.h"
+#include "../src/lighttpning.h"
+#include "../src/http/stream_connection.h"
 
 using namespace lighttpning;
 using Next = MiddlewareFunction::Next;

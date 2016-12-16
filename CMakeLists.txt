@@ -24,6 +24,6 @@ set(LIGHTTPNING_SRC
     src/middleware/middleware_router.h
 )
 
-set(SOURCE_FILES main.cpp ${LIGHTTPNING_SRC})
+set(SOURCE_FILES samples/main.cpp ${LIGHTTPNING_SRC})
 
 add_executable(lighttpning ${SOURCE_FILES})
