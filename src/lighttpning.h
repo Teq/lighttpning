@@ -16,7 +16,7 @@ namespace lighttpning {
 
         void handle(Connection&);
 
-        Lighttpning& router(const std::function<void(MiddlewareRouter&)>&);
+//         Lighttpning& router(const std::function<void(MiddlewareRouter&)>&);
 
         Lighttpning& use(Middleware&);
 

@@ -6,28 +6,24 @@
 using namespace lighttpning;
 using Next = MiddlewareFunction::Next;
 
-void handler1(Request& req, Response& res, const Next& next) {
-    std::cout << "BEGIN [GET /leds/:name]" << std::endl;
-    next();
-    std::cout << "END [GET /leds/:name]" << std::endl;
-}
-
-void handler2(Request& req, Response& res, const Next& next) {
-    std::cout << "BEGIN [POST /leds/:name/:state]" << std::endl;
-    next();
-    std::cout << "END [POST /leds/:name/:state]" << std::endl;
-}
 
 int main() {
 
     Lighttpning app;
+
     MiddlewareRouter router;
 
-    router.route(Request::Method::GET, "/leds/:name").use(handler1);
-    router.route(Request::Method::POST, "/leds/:name/:state").use(handler2);
-//     router.route(Request::Method::POST, "/leds/:name/:state", [](MiddlewareChain& chain) {
-//         chain.use(handler2);
-//     });
+    router.route(Request::Method::GET, "/leds/:name").use([](Request& req, Response& res, const Next& next) {
+        std::cout << "BEGIN [GET /leds/:name]" << std::endl;
+        next();
+        std::cout << "END [GET /leds/:name]" << std::endl;
+    });
+
+    router.route(Request::Method::POST, "/leds/:name/:state").use([](Request& req, Response& res, const Next& next) {
+        std::cout << "BEGIN [POST /leds/:name/:state]" << std::endl;
+        next();
+        std::cout << "END [POST /leds/:name/:state]" << std::endl;
+    });
 
     app.use([](Request& req, Response& res, const Next& next) {
         std::cout << "BEGIN" << std::endl;
@@ -40,9 +36,9 @@ int main() {
     std::fstream getStream("../samples/get.dump");
     std::fstream postStream("../samples/post.dump");
     StreamConnection getConn(getStream);
-    StreamConnection connPost(postStream);
+    StreamConnection postConn(postStream);
     app.handle(getConn);
-    app.handle(connPost);
+    app.handle(postConn);
 
     return 0;
 }

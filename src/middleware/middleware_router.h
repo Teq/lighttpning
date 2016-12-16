@@ -15,13 +15,27 @@ namespace lighttpning {
 
         ~MiddlewareRouter();
 
-        MiddlewareRouter& route(
-            Request::Method,
-            const std::string& pattern,
-            const std::function<void(MiddlewareChain&)>& filler
-        );
+//         MiddlewareRouter& route(
+//             Request::Method,
+//             const std::string& pattern,
+//             const std::function<void(MiddlewareChain&)>& filler
+//         );
 
-        MiddlewareChain& route(Request::Method, const std::string& pattern);
+//         template<typename Functor>
+//         MiddlewareRouter& route(
+//             Request::Method method,
+//             const std::string& pattern,
+//             const Functor&& filler
+//         ) {
+//             auto chain = route(method, pattern);
+//             filler(chain);
+//             return *this;
+//         };
+
+        MiddlewareChain& route(
+            Request::Method,
+            const std::string& pattern
+        );
 
         void call(Request&, Response&) const override;
 

@@ -14,12 +14,12 @@ namespace lighttpning {
         call(request, response);
     }
 
-    Lighttpning& Lighttpning::router(const std::function<void(MiddlewareRouter&)>& filler) {
-        auto router = new MiddlewareRouter();
-        owned.push_back(router);
-        filler(*router);
-        return use(*router);
-    }
+//     Lighttpning& Lighttpning::router(const std::function<void(MiddlewareRouter&)>& filler) {
+//         auto router = new MiddlewareRouter();
+//         owned.push_back(router);
+//         filler(*router);
+//         return use(*router);
+//     }
 
     Lighttpning& Lighttpning::use(Middleware& middleware) {
         MiddlewareChain::use(middleware);
