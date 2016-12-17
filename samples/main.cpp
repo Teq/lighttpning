@@ -14,15 +14,18 @@ int main() {
         next();
         std::cout << "END" << std::endl;
     }).router([](MiddlewareRouter& router) {
-        router.route(Request::Method::GET, "/leds/:name", [](MiddlewareChain& chain) {
+        router.route(Request::Method::GET, "/leds/$", [](MiddlewareChain& chain) {
             chain.useFunc([](Request& req, Response& res, const auto& next) {
                 std::cout << "BEGIN [GET /leds/:name]" << std::endl;
+                auto name = req.getParameter(0);
                 next();
                 std::cout << "END [GET /leds/:name]" << std::endl;
             });
-        }).route(Request::Method::POST, "/leds/:name/:state", [](MiddlewareChain& chain) {
+        }).route(Request::Method::POST, "/leds/$/$", [](MiddlewareChain& chain) {
             chain.useFunc([](Request& req, Response& res, const auto& next) {
                 std::cout << "BEGIN [POST /leds/:name/:state]" << std::endl;
+                auto name = req.getParameter(0);
+                auto state = req.getParameter(1);
                 next();
                 std::cout << "END [POST /leds/:name/:state]" << std::endl;
             });

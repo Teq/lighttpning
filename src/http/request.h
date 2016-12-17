@@ -40,9 +40,9 @@ namespace lighttpning {
 
         const std::string& getPath();
 
-        const std::string& getParameter(const std::string& name) const;
+        const std::string& getParameter(uint8_t index) const;
 
-        void setParameter(const std::string& name, const std::string& value);
+        uint8_t addParameter(const std::string& value);
 
     private:
 
@@ -51,7 +51,7 @@ namespace lighttpning {
         Method method = Method::UNKNOWN;
         std::string path;
         std::string httpVer;
-        std::unordered_map<std::string, std::string> parameters;
+        std::vector<std::string> parameters;
         
         static const std::regex requestLineRegex;
         static const std::regex headerLineRegex;

@@ -52,13 +52,12 @@ namespace lighttpning {
         return path;
     }
 
-    const std::string& Request::getParameter(const std::string& name) const {
-        return parameters.at(name);
+    const std::string& Request::getParameter(uint8_t index) const {
+        return parameters.at(index);
     }
 
-    void Request::setParameter(const std::string& name, const std::string& value) {
-        parameters[name] = value;
-
+    uint8_t Request::addParameter(const std::string& value) {
+        parameters.push_back(value);
     }
 
 }

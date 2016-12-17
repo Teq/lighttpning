@@ -2,45 +2,75 @@
 
 namespace lighttpning {
 
-    constexpr auto regex_options = std::regex::ECMAScript;
-
-    const std::regex MiddlewareRouter::Route::parameterNameRegex(":(\\w+)", regex_options);
-    const std::string MiddlewareRouter::Route::parameterValuePattern("(\\w+)");
 
     MiddlewareRouter::Route::Route(Request::Method method, const std::string& pattern):
-        routeMethod(method)
-    {
-        std::smatch match;
-        std::string routeRegexString(pattern);
-
-        while (std::regex_search(routeRegexString, match, parameterNameRegex)) {
-            auto parameterName = match[1].str();
-            parameters.push_back(parameterName);
-            routeRegexString.replace(match[0].first, match[0].second, parameterValuePattern);
-        }
-
-        routeRegex.assign(routeRegexString);
-    }
+        method(method),
+        pattern(pattern)
+    { }
 
     bool MiddlewareRouter::Route::match(Request& request) const {
 
-        auto result = false;
+        bool match = true;
 
-        std::smatch match;
+        if (request.getMethod() == method) {
 
-        if (request.getMethod() == routeMethod && std::regex_match(request.getPath(), match, routeRegex)) {
+            const char* patternPtr = pattern.c_str();
+            const char* pathPtr = request.getPath().c_str();
 
-            uint8_t parameterIndex = 1;
+            for(;;) {
+                
+                char patternChar = *patternPtr;
+                char pathChar = *pathPtr;
+                                
+                if (patternChar == '$' && pathChar != 0) { // parameter placeholder encountered
+                    
+                    size_t len = 0;
+                    
+                    while(pathChar = pathPtr[len]) {
+                        
+                        if (
+                            (pathChar >= '0' && pathChar <= '9') ||
+                            (pathChar >= 'a' && pathChar <= 'z') ||
+                            (pathChar >= 'A' && pathChar <= 'Z') ||
+                            (pathChar == '_') // TODO: try isalpha(c), isdigit(c)
+                        ) {
+                            len++;
+                        } else {
+                            break;
+                        }
+                                                
+                    }
+                    
+                    if (len > 0) {
+                        request.addParameter(std::string(pathPtr, len));
+                    }
+                    
+                    patternPtr++;
+                    pathPtr += len;
+                    
+                } else if (patternChar != pathChar) {
+                    
+                    match = false;
+                    break;
+                    
+                } else if (!patternChar) {
+                    
+                    break; // parsed to end
+                    
+                } else {
 
-            for (auto parameterName : parameters) {
-                auto parameterValue = match[parameterIndex++].str();
-                request.setParameter(parameterName, parameterValue);
+                    patternPtr++;
+                    pathPtr++;
+                    
+                }
+                
             }
-
-            result = true;
+            
+        } else {
+            match = false;
         }
 
-        return result;
+        return match;
     }
 
     MiddlewareRouter::~MiddlewareRouter() {

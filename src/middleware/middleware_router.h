@@ -1,6 +1,5 @@
 #pragma once
 
-#include <regex>
 #include <unordered_map>
 #include <vector>
 
@@ -46,12 +45,8 @@ namespace lighttpning {
 
         private:
 
-            Request::Method routeMethod;
-            std::regex routeRegex;
-            std::vector<std::string> parameters;
-
-            static const std::regex parameterNameRegex;
-            static const std::string parameterValuePattern;
+            Request::Method method;
+            std::string pattern;
 
         };
 
