@@ -13,6 +13,8 @@ namespace lighttpning {
 
         size_t read(char* buffer, size_t length) override;
         size_t read(const char delimiter, char* buffer, size_t length) override;
+        size_t ignore(size_t length) override;
+        size_t ignore(const char delimiter, size_t length) override;
         bool connected() override;
 
         size_t write(char* buffer, size_t length) override;

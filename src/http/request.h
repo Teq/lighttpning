@@ -1,10 +1,10 @@
 #pragma once
 
-#include <string>
-#include <unordered_map>
-#include <regex>
+#include <vector>
 
 #include "connection.h"
+#include "../misc/string_buffer.h"
+#include "../misc/string_view.h"
 
 namespace lighttpning {
 
@@ -38,23 +38,26 @@ namespace lighttpning {
         
         Method getMethod();
 
-        const std::string& getPath();
+        const StringView getPath();
 
-        const std::string& getParameter(uint8_t index) const;
+        const StringView& getParameter(std::vector<StringView>::size_type index) const;
 
-        uint8_t addParameter(const std::string& value);
+        std::vector<StringView>::size_type addParameter(StringView value);
+
+        std::vector<StringView>::size_type addParameter(const char* ptr, size_t size);
 
     private:
+
+        static constexpr size_t DEFAULT_STR_BUFF_SIZE = 64;
+        static constexpr size_t MAX_HTTP_METHOD_STR_SIZE = 8;
+        static constexpr size_t MAX_HTTP_PATH_STR_SIZE = 256;
+        static constexpr size_t MAX_HTTP_VERSION_STR_SIZE = 10;
 
         ConnectionIn& connection;
         
         Method method = Method::UNKNOWN;
-        std::string path;
-        std::string httpVer;
-        std::vector<std::string> parameters;
-        
-        static const std::regex requestLineRegex;
-        static const std::regex headerLineRegex;
-        static const std::unordered_map<std::string, Method> methodMap;
+        StringBuffer requestLineBuffer;
+        StringBuffer headerLineBuffer;
+        std::vector<StringView> pathParams;
     };
 }

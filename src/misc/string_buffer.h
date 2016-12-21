@@ -1,43 +1,51 @@
-//    class StringBuffer {
-//
-//    public:
-//
-//        StringBuffer() {
-//            buf = (char*)malloc(buf_len);
-//        }
-//
-//        ~StringBuffer() {
-//            free(buf);
-//        }
-//
-//        void operator += (char c) {
-//            buf[buf_cur++] = c;
-//            if (buf_cur >= buf_len) {
-//                buf_len *= 1.5;
-//                void* newPtr = realloc(buf, buf_len);
-//                if (newPtr == nullptr) {
-//                    throw new std::runtime_error("Unable to allocate memory");
-//                } else {
-//                    buf = (char*)newPtr;
-//                }
-//            }
-//        }
-//
-//        inline bool empty() {
-//            return buf_cur == 0;
-//        }
-//
-//        void clear() {
-//            buf_len = DEFAULT_BUF_LEN;
-//            buf = (char*)realloc(buf, buf_len); // realloc to lower size, should not fail
-//            buf_cur = 0;
-//        }
-//
-//    private:
-//
-//        constexpr unsigned short DEFAULT_BUF_LEN = 8;
-//        char* buf = nullptr;
-//        unsigned short buf_cur = 0;
-//        unsigned short buf_len = DEFAULT_BUF_LEN;
-//
-//    };
+#pragma once
+
+#include <cstdlib>
+
+namespace lighttpning {
+
+    class StringBuffer {
+
+    public:
+
+        StringBuffer();
+
+        StringBuffer(size_t capacity);
+
+        ~StringBuffer();
+
+//        void operator += (char character);
+
+//        void operator += (const char* string);
+
+        bool operator ==(const StringBuffer&) const;
+
+        bool operator ==(const char*) const;
+
+        bool empty() const;
+
+        void clear();
+
+        size_t capacity() const;
+
+        bool reserve(size_t newCapacity);
+
+        bool shrink();
+
+        size_t size() const;
+
+        bool resize(size_t newSize);
+
+        char* buff() const;
+
+    private:
+
+        size_t bufferCapacity = 0;
+        size_t bufferSize = 0;
+        char* buffer = nullptr;
+
+    };
+
+
+}
+

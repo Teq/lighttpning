@@ -14,14 +14,24 @@ namespace lighttpning {
 
     size_t StreamConnection::read(char* buffer, size_t length) {
         input.read(buffer, length);
-        return input.gcount();
+        return (size_t)input.gcount();
     }
 
     size_t StreamConnection::read(const char delimiter, char* buffer, size_t length) {
         input.get(buffer, length, delimiter);
-        size_t count = input.gcount();
-        buffer[count] = delimiter;
-        return count + 1;
+        size_t size = (size_t)input.gcount();
+        buffer[size] = delimiter;
+        return size + 1;
+    }
+
+    size_t StreamConnection::ignore(size_t length) {
+        input.ignore(length);
+        return (size_t)input.gcount();
+    }
+
+    size_t StreamConnection::ignore(const char delimiter, size_t length) {
+        input.ignore(length, delimiter);
+        return (size_t)input.gcount();
     }
 
     bool StreamConnection::connected() {
@@ -29,7 +39,7 @@ namespace lighttpning {
     }
     
     size_t StreamConnection::write(char* buffer, size_t length) {
-//         throw std::logic_error("Not implemented");
+        return 0;
     }
 
     void StreamConnection::close() {

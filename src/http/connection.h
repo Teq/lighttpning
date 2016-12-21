@@ -6,6 +6,8 @@ namespace lighttpning {
     public:
         virtual size_t read(char* buffer, size_t length) = 0;
         virtual size_t read(const char delimiter, char* buffer, size_t length) = 0;
+        virtual size_t ignore(size_t length) = 0;
+        virtual size_t ignore(const char delimiter, size_t length) = 0;
         virtual bool connected() = 0;
     };
 

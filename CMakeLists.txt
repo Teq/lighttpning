@@ -21,7 +21,11 @@ set(LIGHTTPNING_SRC
     src/middleware/middleware_function.h
     src/middleware/middleware_router.cpp
     src/middleware/middleware_router.h
-)
+    src/misc/string_buffer.cpp
+    src/misc/string_buffer.h
+    src/misc/string_view.cpp
+    src/misc/string_view.h
+    )
 
 set(SOURCE_FILES samples/main.cpp ${LIGHTTPNING_SRC})
 

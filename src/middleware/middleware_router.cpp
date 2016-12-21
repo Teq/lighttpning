@@ -15,9 +15,9 @@ namespace lighttpning {
         if (request.getMethod() == method) {
 
             const char* patternPtr = pattern.c_str();
-            const char* pathPtr = request.getPath().c_str();
+            const char* pathPtr = request.getPath().view();
 
-            for(;;) {
+            for (;;) {
                 
                 char patternChar = *patternPtr;
                 char pathChar = *pathPtr;
@@ -26,7 +26,7 @@ namespace lighttpning {
                     
                     size_t len = 0;
                     
-                    while(pathChar = pathPtr[len]) {
+                    while ((pathChar = pathPtr[len]) != 0) {
                         
                         if (
                             (pathChar >= '0' && pathChar <= '9') ||
@@ -42,7 +42,7 @@ namespace lighttpning {
                     }
                     
                     if (len > 0) {
-                        request.addParameter(std::string(pathPtr, len));
+                        request.addParameter(pathPtr, len);
                     }
                     
                     patternPtr++;
