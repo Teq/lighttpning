@@ -5,6 +5,7 @@
 
 #include "middleware.h"
 #include "middleware_chain.h"
+#include "route.h"
 
 namespace lighttpning {
 
@@ -28,21 +29,6 @@ namespace lighttpning {
         void call(Request&, Response&) const override;
 
     private:
-
-        class Route {
-
-        public:
-
-            Route(Request::Method, StringView pattern);
-
-            bool match(Request&) const;
-
-        private:
-
-            Request::Method method;
-            StringView pattern;
-
-        };
 
         std::unordered_map<Route*, MiddlewareChain*> routes;
 
