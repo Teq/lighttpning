@@ -8,13 +8,13 @@
 
 namespace lighttpning {
 
-    class MiddlewareRouter : public Middleware {
+    class Router : public Middleware {
 
     public:
 
-        ~MiddlewareRouter();
+        ~Router();
 
-        template<typename Function> MiddlewareRouter& route(
+        template<typename Function> Router& route(
             Request::Method method,
             StringView pattern,
             const Function& filler

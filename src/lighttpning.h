@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "middleware/middleware_chain.h"
-#include "middleware/middleware_router.h"
+#include "middleware/router.h"
 
 namespace lighttpning {
 
@@ -16,7 +16,7 @@ namespace lighttpning {
         void handle(Connection&);
 
         template<typename Function> Lighttpning& router(const Function& filler) {
-            auto router = new MiddlewareRouter();
+            auto router = new Router();
             owned.push_back(router);
             filler(*router);
             return use(*router);

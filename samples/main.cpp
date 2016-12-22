@@ -22,7 +22,7 @@ int main() {
         std::cout << "BEGIN " + std::string(path.view(), path.size()) << std::endl;
         next();
         std::cout << "END" << std::endl;
-    }).router([](MiddlewareRouter& router) {
+    }).router([](Router& router) {
         router.route(Request::Method::GET, "/leds/$", [](MiddlewareChain& chain) {
             chain.func([](Request& req, Response& res, const auto& next) {
                 std::cout << "ROUTE [GET /leds/$] " + format(req.getParameters()) << std::endl;

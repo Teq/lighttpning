@@ -19,8 +19,8 @@ set(LIGHTTPNING_SRC
     src/middleware/middleware_chain.cpp
     src/middleware/middleware_chain.h
     src/middleware/middleware_function.h
-    src/middleware/middleware_router.cpp
-    src/middleware/middleware_router.h
+    src/middleware/router.cpp
+    src/middleware/router.h
     src/misc/string_buffer.cpp
     src/misc/string_buffer.h
     src/misc/string_view.cpp

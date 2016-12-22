@@ -1,14 +1,14 @@
-#include "middleware_router.h"
+#include "router.h"
 
 namespace lighttpning {
 
 
-    MiddlewareRouter::Route::Route(Request::Method method, StringView pattern):
+    Router::Route::Route(Request::Method method, StringView pattern):
         method(method),
         pattern(pattern)
     { }
 
-    bool MiddlewareRouter::Route::match(Request& request) const {
+    bool Router::Route::match(Request& request) const {
 
         bool match = true;
 
@@ -77,14 +77,14 @@ namespace lighttpning {
         return match;
     }
 
-    MiddlewareRouter::~MiddlewareRouter() {
+    Router::~Router() {
         for (auto route : routes) {
             delete route.first;
             delete route.second;
         }
     }
 
-    MiddlewareChain& MiddlewareRouter::route(
+    MiddlewareChain& Router::route(
         Request::Method method,
         StringView pattern
     ) {
@@ -94,7 +94,7 @@ namespace lighttpning {
         return *chain;
     }
 
-    void MiddlewareRouter::call(Request& request, Response& response) const {
+    void Router::call(Request& request, Response& response) const {
 
         for (auto route : routes) {
             if(route.first->match(request)) {
