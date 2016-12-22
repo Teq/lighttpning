@@ -3,7 +3,7 @@
 namespace lighttpning {
 
 
-    MiddlewareRouter::Route::Route(Request::Method method, const std::string& pattern):
+    MiddlewareRouter::Route::Route(Request::Method method, StringView pattern):
         method(method),
         pattern(pattern)
     { }
@@ -14,19 +14,23 @@ namespace lighttpning {
 
         if (request.getMethod() == method) {
 
-            const char* patternPtr = pattern.c_str();
-            const char* pathPtr = request.getPath().view();
+            auto path = request.getPath();
 
-            for (;;) {
+            const char* patternPtr = pattern.view();
+            const char* pathPtr = path.view();
+
+            while (pattern.includes(patternPtr) && path.includes(pathPtr)) {
                 
                 char patternChar = *patternPtr;
                 char pathChar = *pathPtr;
                                 
-                if (patternChar == '$' && pathChar != 0) { // parameter placeholder encountered
+                if (patternChar == '$') { // parameter placeholder encountered
                     
                     size_t len = 0;
                     
-                    while ((pathChar = pathPtr[len]) != 0) {
+                    while (path.includes(pathPtr + len)) {
+
+                        pathChar = pathPtr[len];
                         
                         if (
                             (pathChar >= '0' && pathChar <= '9') ||
@@ -53,10 +57,6 @@ namespace lighttpning {
                     match = false;
                     break;
                     
-                } else if (!patternChar) {
-                    
-                    break; // parsed to end
-                    
                 } else {
 
                     patternPtr++;
@@ -64,6 +64,10 @@ namespace lighttpning {
                     
                 }
                 
+            }
+
+            if (pattern.includes(patternPtr) || path.includes(pathPtr)) {
+                match = false;
             }
             
         } else {
@@ -82,12 +86,19 @@ namespace lighttpning {
 
     MiddlewareChain& MiddlewareRouter::route(
         Request::Method method,
-        const std::string& pattern
+        StringView pattern
     ) {
         auto route = new Route(method, pattern);
         auto chain = new MiddlewareChain();
         routes.insert({ route, chain });
         return *chain;
+    }
+
+    MiddlewareChain& MiddlewareRouter::route(
+        Request::Method method,
+        const char* pattern
+    ) {
+        return route(method, StringView(pattern, strlen(pattern)));
     }
 
     void MiddlewareRouter::call(Request& request, Response& response) const {

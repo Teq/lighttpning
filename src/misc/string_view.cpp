@@ -15,4 +15,7 @@ namespace lighttpning {
         return viewPtr;
     }
 
+    bool StringView::includes(const char *ptr) const {
+        return viewPtr <= ptr && ptr < (viewPtr + viewSize);
+    }
 }

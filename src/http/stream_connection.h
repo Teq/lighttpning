@@ -11,13 +11,13 @@ namespace lighttpning {
         StreamConnection(std::istream& in, std::ostream& out);
         StreamConnection(std::iostream& inout);
 
-        size_t read(char* buffer, size_t length) override;
-        size_t read(const char delimiter, char* buffer, size_t length) override;
-        size_t ignore(size_t length) override;
-        size_t ignore(const char delimiter, size_t length) override;
+        size_t read(char* buffer, const size_t length) override;
+        size_t read(char* buffer, const size_t length, const char delimiter) override;
+        size_t skip(const size_t length) override;
+        size_t skip(const size_t length, const char delimiter) override;
         bool connected() override;
 
-        size_t write(char* buffer, size_t length) override;
+        size_t write(const char* buffer, const size_t length) override;
         void close() override;
 
     private:

@@ -13,7 +13,9 @@ namespace lighttpning {
         if (method == Method::UNKNOWN) {
 
             // read until space
-            requestLineBuffer.resize(connection.read(' ', requestLineBuffer.buff(), MAX_HTTP_METHOD_STR_SIZE) - 1);
+            size_t size = connection.read(requestLineBuffer.buff(), MAX_HTTP_METHOD_STR_SIZE, ' ');
+            // set actual size (excluding space character)
+            requestLineBuffer.resize(size - 1);
 
             if (requestLineBuffer == "OPTIONS") {
                 method = Method::OPTIONS;
@@ -49,11 +51,13 @@ namespace lighttpning {
         if (requestLineBuffer.empty()) {
 
             // read until space
-            requestLineBuffer.resize(connection.read(' ', requestLineBuffer.buff(), MAX_HTTP_PATH_STR_SIZE));
+            size_t size = connection.read(requestLineBuffer.buff(), MAX_HTTP_PATH_STR_SIZE, ' ');
+            // set actual size (excluding space character)
+            requestLineBuffer.resize(size - 1);
 
             requestLineBuffer.shrink();
 
-            connection.ignore('\n', MAX_HTTP_VERSION_STR_SIZE);
+            connection.skip('\n', MAX_HTTP_VERSION_STR_SIZE);
         }
 
         return StringView(requestLineBuffer.buff(), requestLineBuffer.size());
@@ -61,6 +65,10 @@ namespace lighttpning {
 
     const StringView& Request::getParameter(std::vector<StringView>::size_type index) const {
         return pathParams.at(index);
+    }
+
+    const std::vector<StringView>& Request::getParameters() const {
+        return pathParams;
     }
 
     std::vector<StringView>::size_type Request::addParameter(StringView value) {

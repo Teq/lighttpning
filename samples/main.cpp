@@ -1,37 +1,39 @@
 #include <fstream>
+#include <string>
 
 #include "../src/lighttpning.h"
 #include "../src/http/stream_connection.h"
 
 using namespace lighttpning;
 
+std::string format(const std::vector<StringView>& parameters) {
+    std::string result;
+
+
+    return result;
+}
+
 int main() {
 
     Lighttpning app;
 
     app.useFunc([](Request& req, Response& res, const auto& next) {
-        std::cout << "BEGIN" << std::endl;
+        auto path = req.getPath();
+        std::cout << "BEGIN " + std::string(path.view(), path.size()) << std::endl;
         next();
         std::cout << "END" << std::endl;
     }).router([](MiddlewareRouter& router) {
         router.route(Request::Method::GET, "/leds/$", [](MiddlewareChain& chain) {
             chain.useFunc([](Request& req, Response& res, const auto& next) {
-                std::cout << "BEGIN [GET /leds/:name]" << std::endl;
-                auto name = req.getParameter(0);
+                std::cout << "ROUTE [GET /leds/$] " + format(req.getParameters()) << std::endl;
                 next();
-                std::cout << "END [GET /leds/:name]" << std::endl;
             });
         }).route(Request::Method::POST, "/leds/$/$", [](MiddlewareChain& chain) {
             chain.useFunc([](Request& req, Response& res, const auto& next) {
-                std::cout << "BEGIN [POST /leds/:name/:state]" << std::endl;
-                auto name = req.getParameter(0);
-                auto state = req.getParameter(1);
+                std::cout << "ROUTE [POST /leds/$/$] " + format(req.getParameters()) << std::endl;
                 next();
-                std::cout << "END [POST /leds/:name/:state]" << std::endl;
             });
         });
-    }).useFunc([](Request&, Response&, const auto&) {
-        std::cout << "FINAL" << std::endl;
     });
 
     std::fstream getStream("../samples/get.dump");

@@ -14,9 +14,9 @@ namespace lighttpning {
 
         ~MiddlewareRouter();
 
-        template<typename Function> MiddlewareRouter& route(
+        template<typename Function, typename Pattern> MiddlewareRouter& route(
             Request::Method method,
-            const std::string& pattern,
+            Pattern pattern,
             const Function& filler
         ) {
 //             // TODO: figure out why it doesn't work with temp variable (probably due to lvalue/rvalue stuff..)
@@ -26,10 +26,9 @@ namespace lighttpning {
             return *this;
         };
 
-        MiddlewareChain& route(
-            Request::Method,
-            const std::string& pattern
-        );
+        MiddlewareChain& route(Request::Method, StringView pattern);
+
+        MiddlewareChain& route(Request::Method, const char* pattern);
 
         void call(Request&, Response&) const override;
 
@@ -39,14 +38,14 @@ namespace lighttpning {
 
         public:
 
-            Route(Request::Method, const std::string& pattern);
+            Route(Request::Method, StringView pattern);
 
             bool match(Request&) const;
 
         private:
 
             Request::Method method;
-            std::string pattern;
+            StringView pattern;
 
         };
 

@@ -14,6 +14,8 @@ namespace lighttpning {
 
         const char* view() const;
 
+        bool includes(const char *ptr) const;
+
     private:
 
         const char* viewPtr;

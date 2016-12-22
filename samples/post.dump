@@ -1,4 +1,4 @@
-POST /leds/led_a/on HTTP/1.1
+POST /leds/led_b/off HTTP/1.1
 Host: localhost:3050
 Connection: keep-alive
 Cache-Control: max-age=0
