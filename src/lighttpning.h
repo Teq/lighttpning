@@ -24,9 +24,8 @@ namespace lighttpning {
 
         Lighttpning& use(Middleware&);
 
-        // TODO: Rename it to "use" (solve overload resolution problem)
-        template<typename Function> Lighttpning& useFunc(const Function& function) {
-            MiddlewareChain::useFunc(function);
+        template<typename Function> Lighttpning& func(const Function& function) {
+            MiddlewareChain::func(function);
             return *this;
         };
 

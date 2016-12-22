@@ -10,8 +10,7 @@ namespace lighttpning {
     { }
 
     StringView::StringView(const char* cStr):
-        viewPtr(cStr),
-        viewSize(strlen(cStr))
+        StringView(cStr, strlen(cStr))
     { }
 
     size_t StringView::size() const {
