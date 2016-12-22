@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include "string_view.h"
 
 namespace lighttpning {
@@ -5,6 +7,11 @@ namespace lighttpning {
     StringView::StringView(const char* buffer, size_t size):
         viewPtr(buffer),
         viewSize(size)
+    { }
+
+    StringView::StringView(const char* cStr):
+        viewPtr(cStr),
+        viewSize(strlen(cStr))
     { }
 
     size_t StringView::size() const {

@@ -94,13 +94,6 @@ namespace lighttpning {
         return *chain;
     }
 
-    MiddlewareChain& MiddlewareRouter::route(
-        Request::Method method,
-        const char* pattern
-    ) {
-        return route(method, StringView(pattern, strlen(pattern)));
-    }
-
     void MiddlewareRouter::call(Request& request, Response& response) const {
 
         for (auto route : routes) {

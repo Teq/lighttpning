@@ -10,6 +10,8 @@ namespace lighttpning {
 
         StringView(const char* buffer, size_t size);
 
+        StringView(const char* cStr);
+
         size_t size() const;
 
         const char* view() const;
