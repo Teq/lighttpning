@@ -15,6 +15,11 @@ namespace lighttpning {
 
         void setNext(const Middleware&);
 
+        class Next {
+        public:
+            virtual void operator ()() const = 0;
+        };
+
     protected:
 
         const Middleware* next = nullptr;

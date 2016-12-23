@@ -14,14 +14,34 @@ namespace lighttpning {
         { }
 
         void call(Request& request, Response& response) const override {
-            func(request, response, [&]() {
-                if (next) {
-                    next->call(request, response);
-                }
-            });
+            func(request, response, NextImpl(next, request, response));
         }
 
     private:
+
+        class NextImpl : public Middleware::Next {
+
+        public:
+
+            NextImpl(const Middleware* mw, Request& req, Response& res):
+                middleware(mw),
+                request(req),
+                response(res)
+            {}
+
+            void operator ()() const {
+                if (middleware) {
+                    middleware->call(request, response);
+                }
+            };
+
+        private:
+
+            const Middleware* middleware;
+            Request& request;
+            Response& response;
+
+        };
 
         const Function& func;
 

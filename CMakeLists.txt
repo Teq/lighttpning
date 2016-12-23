@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(lighttpning)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(LIGHTTPNING_SRC
     src/http/connection.h
