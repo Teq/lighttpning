@@ -10,7 +10,7 @@ namespace lighttpning {
     StreamConnection::StreamConnection(std::iostream& inout):
         input(inout),
         output(inout)
-    { };
+    { }
 
     size_t StreamConnection::read(char* buffer, const size_t length) {
         input.read(buffer, length);

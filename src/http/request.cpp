@@ -63,7 +63,7 @@ namespace lighttpning {
         return StringView(requestLineBuffer.buff(), requestLineBuffer.size());
     }
 
-    const StringView& Request::getParameter(std::vector<StringView>::size_type index) const {
+    const StringView& Request::getParameter(size_t index) const {
         return pathParams.at(index);
     }
 
@@ -71,12 +71,12 @@ namespace lighttpning {
         return pathParams;
     }
 
-    std::vector<StringView>::size_type Request::addParameter(StringView value) {
+    size_t Request::addParameter(StringView&& value) {
         pathParams.push_back(value);
         return pathParams.size() - 1;
     }
 
-    std::vector<StringView>::size_type Request::addParameter(const char* ptr, size_t size) {
+    size_t Request::addParameter(const char* ptr, size_t size) {
         return addParameter(StringView(ptr, size));
     }
 

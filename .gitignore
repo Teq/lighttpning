@@ -4,3 +4,7 @@
 build*/
 cmake-*/
 lighttpning.kdev*
+.vimrc.*
+.ycm_extra_conf.py
+*.swp
+CMakeLists.txt.user

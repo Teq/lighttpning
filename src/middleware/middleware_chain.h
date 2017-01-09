@@ -15,12 +15,13 @@ namespace lighttpning {
 
         MiddlewareChain& use(Middleware&);
 
-        template<typename Function> MiddlewareChain& func(const Function& function) {
-            auto middleware = new MiddlewareFunction<Function>(function);
+        // Make sure it can only accept rvalue references
+        template<typename Function, class = typename std::enable_if<std::is_rvalue_reference<Function&&>::value>::type>
+        MiddlewareChain& use(Function&& function) {
+            auto middleware = new MiddlewareFunction<Function>(function); // TODO: try std::move
             owned.push_back(middleware);
-
             return use(*middleware);
-        };
+        }
 
         void call(Request&, Response&) const override;
 

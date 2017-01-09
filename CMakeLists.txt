@@ -4,6 +4,8 @@ project(lighttpning)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+
 set(LIGHTTPNING_SRC
     src/http/connection.h
     src/http/request.cpp
