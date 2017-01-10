@@ -2,6 +2,9 @@
 
 #include "middleware.h"
 
+#include <type_traits>
+#include <functional>
+
 namespace lighttpning {
 
     template<typename Function>
@@ -9,8 +12,17 @@ namespace lighttpning {
 
     public:
 
-        MiddlewareFunction(const Function& middlewareFunction):
-            func(middlewareFunction)
+        template<
+            typename = typename std::enable_if<
+                std::is_convertible<
+                    Function,
+                    std::function<void(Request&, Response&, const Middleware::Next&)>
+                >::value &&
+                std::is_rvalue_reference<Function&&>::value // Function should be passed as rvalue reference
+            >::type
+        >
+        MiddlewareFunction(const Function&& middlewareFunction):
+            func(std::move(middlewareFunction))
         { }
 
         void call(Request& request, Response& response) const override {
@@ -23,27 +35,27 @@ namespace lighttpning {
 
         public:
 
-            NextImpl(const Middleware* mw, Request& req, Response& res):
-                middleware(mw),
+            NextImpl(const Middleware* middleware, Request& req, Response& res):
+                next(middleware),
                 request(req),
                 response(res)
             {}
 
             void operator ()() const {
-                if (middleware) {
-                    middleware->call(request, response);
+                if (next) {
+                    next->call(request, response);
                 }
             };
 
         private:
 
-            const Middleware* middleware;
+            const Middleware* next;
             Request& request;
             Response& response;
 
         };
 
-        const Function& func;
+        const Function&& func;
 
     };
 

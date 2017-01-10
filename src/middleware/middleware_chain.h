@@ -1,9 +1,10 @@
 #pragma once
 
-#include <vector>
-
 #include "middleware.h"
 #include "middleware_function.h"
+
+#include <vector>
+#include <type_traits>
 
 namespace lighttpning {
 
@@ -15,10 +16,14 @@ namespace lighttpning {
 
         MiddlewareChain& use(Middleware&);
 
-        // Make sure it can only accept rvalue references
-        template<typename Function, class = typename std::enable_if<std::is_rvalue_reference<Function&&>::value>::type>
-        MiddlewareChain& use(Function&& function) {
-            auto middleware = new MiddlewareFunction<Function>(function); // TODO: try std::move
+        template<
+            typename Function,
+            typename = typename std::enable_if<
+                !std::is_base_of<Middleware, Function>::value // This overload shouldn't hide use(Middleware&)
+            >::type
+        >
+        MiddlewareChain& use(const Function&& function) {
+            auto middleware = new MiddlewareFunction<const Function&&>(std::forward<const Function>(function));
             owned.push_back(middleware);
             return use(*middleware);
         }

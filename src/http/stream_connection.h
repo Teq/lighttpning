@@ -1,8 +1,8 @@
 #pragma once
 
-#include <iostream>
-
 #include "connection.h"
+
+#include <iostream>
 
 namespace lighttpning {
 

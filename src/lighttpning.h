@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <type_traits>
+#include <utility>
 
 #include "middleware/middleware_chain.h"
 #include "middleware/router.h"
@@ -26,10 +26,9 @@ namespace lighttpning {
 
         Lighttpning& use(Middleware&);
 
-        // Make sure it can only accept rvalue references
-        template<typename Function, class = typename std::enable_if<std::is_rvalue_reference<Function&&>::value>::type>
+        template<typename Function>
         Lighttpning& use(Function&& function) {
-            MiddlewareChain::use(std::move(function));
+            MiddlewareChain::use(std::forward<Function>(function));
             return *this;
         }
 

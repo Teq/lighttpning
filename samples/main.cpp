@@ -17,19 +17,19 @@ int main() {
 
     Lighttpning app;
 
-    app.use([](Request& req, Response& res, const Middleware::Next&& next) {
+    app.use([](Request& req, Response& res, const Middleware::Next& next) {
         auto path = req.getPath();
         std::cout << "BEGIN " + std::string(path.view(), path.size()) << std::endl;
         next();
         std::cout << "END" << std::endl;
     }).router([](Router& router) {
         router.route(Request::Method::GET, "/leds/$", [](MiddlewareChain& chain) {
-            chain.use([](Request& req, Response& res, const Middleware::Next&& next) {
+            chain.use([](Request& req, Response& res, const Middleware::Next& next) {
                 std::cout << "ROUTE [GET /leds/$] " + format(req.getParameters()) << std::endl;
                 next();
             });
         }).route(Request::Method::POST, "/leds/$/$", [](MiddlewareChain& chain) {
-            chain.use([](Request& req, Response& res, const Middleware::Next&& next) {
+            chain.use([](Request& req, Response& res, const Middleware::Next& next) {
                 std::cout << "ROUTE [POST /leds/$/$] " + format(req.getParameters()) << std::endl;
                 next();
             });
