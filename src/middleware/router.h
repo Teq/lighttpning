@@ -5,7 +5,6 @@
 #include "route.h"
 
 #include <unordered_map>
-#include <vector>
 
 namespace lighttpning {
 
@@ -15,16 +14,16 @@ namespace lighttpning {
 
         ~Router();
 
-        template<typename Function> Router& route(
-            Request::Method method,
-            StringView pattern,
-            const Function& filler
-        ) {
-            filler(route(method, pattern));
-            return *this;
-        };
+        MiddlewareChain& route(Request::Method, StringView&& pattern);
 
-        MiddlewareChain& route(Request::Method, StringView pattern);
+        template<typename FillerFunction> Router& route(
+            Request::Method method,
+            StringView&& pattern,
+            const FillerFunction& filler
+        ) {
+            filler(route(method, std::move(pattern)));
+            return *this;
+        }
 
         void call(Request&, Response&) const override;
 

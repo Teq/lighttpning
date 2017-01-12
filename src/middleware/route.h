@@ -9,14 +9,14 @@ namespace lighttpning {
 
     public:
 
-        Route(Request::Method, StringView pattern);
+        Route(Request::Method, StringView&& pattern);
 
         bool match(Request&) const;
 
     private:
 
-        Request::Method method;
-        StringView pattern;
+        const Request::Method method;
+        const StringView pattern;
 
     };
 

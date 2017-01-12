@@ -4,13 +4,17 @@
 
 namespace lighttpning {
 
-    class StringBuffer {
+    class StringBuffer { // TODO: Implement according The Rule Of Three/Four
 
     public:
+
+        // constructor
 
         StringBuffer();
 
         StringBuffer(size_t capacity);
+
+        //StringBuffer(const StringBuffer& other);
 
         ~StringBuffer();
 

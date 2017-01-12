@@ -2,9 +2,9 @@
 
 namespace lighttpning {
 
-    Route::Route(Request::Method method, StringView pattern):
+    Route::Route(Request::Method method, StringView&& pattern):
         method(method),
-        pattern(pattern)
+        pattern(std::move(pattern))
     { }
 
     bool Route::match(Request& request) const {

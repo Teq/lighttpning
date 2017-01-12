@@ -11,9 +11,9 @@ namespace lighttpning {
 
     MiddlewareChain& Router::route(
         Request::Method method,
-        StringView pattern
+        StringView&& pattern
     ) {
-        auto route = new Route(method, pattern);
+        auto route = new Route(method, std::move(pattern));
         auto chain = new MiddlewareChain();
         routes.insert({ route, chain });
         return *chain;

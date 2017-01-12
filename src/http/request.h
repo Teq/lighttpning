@@ -42,8 +42,6 @@ namespace lighttpning {
 
         const StringView& getParameter(size_t index) const;
 
-        const std::vector<StringView>& getParameters() const;
-
         size_t addParameter(StringView&& value);
 
         size_t addParameter(const char* ptr, size_t size);

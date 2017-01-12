@@ -9,7 +9,7 @@ namespace lighttpning {
         
     public:
 
-        virtual ~Middleware() { };
+        virtual ~Middleware() { }
 
         virtual void call(Request&, Response&) const = 0;
 

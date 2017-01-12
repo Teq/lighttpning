@@ -21,7 +21,7 @@ namespace lighttpning {
             auto router = new Router();
             owned.push_back(router);
             filler(*router);
-            return use(*router);
+            return use((Middleware&)*router); // explicit cast to use non-template overload: use(Middleware&)
         }
 
         Lighttpning& use(Middleware&);
