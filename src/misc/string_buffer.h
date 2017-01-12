@@ -4,19 +4,27 @@
 
 namespace lighttpning {
 
-    class StringBuffer { // TODO: Implement according The Rule Of Three/Four
+    class StringBuffer { // TODO: Implement according to The Rule Of Three/Four
 
     public:
 
-        // constructor
+        // ctors, assignment operators, dtor
 
-        StringBuffer();
+        StringBuffer() = default;
 
         StringBuffer(size_t capacity);
 
-        //StringBuffer(const StringBuffer& other);
+        StringBuffer(const StringBuffer& other); // copy
+
+        StringBuffer(StringBuffer&& other); // move
+
+        StringBuffer& operator =(StringBuffer other); // copy-and-swap
+
+        StringBuffer& operator =(StringBuffer&& other); // move assignment
 
         ~StringBuffer();
+
+        // methods
 
 //        void operator += (char character);
 
@@ -32,9 +40,9 @@ namespace lighttpning {
 
         size_t capacity() const;
 
-        bool reserve(size_t newCapacity);
+        void reserve(size_t newCapacity);
 
-        bool shrink();
+        void shrink();
 
         size_t size() const;
 

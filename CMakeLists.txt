@@ -29,6 +29,8 @@ set(LIGHTTPNING_SRC
     src/misc/string_buffer.h
     src/misc/string_view.cpp
     src/misc/string_view.h
+    src/exceptions/runtime_error.cpp
+    src/exceptions/runtime_error.h
     )
 
 set(SOURCE_FILES samples/main.cpp ${LIGHTTPNING_SRC})

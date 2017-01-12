@@ -1,16 +1,25 @@
 #include "string_buffer.h"
+#include "../exceptions/runtime_error.h"
 
 #include <cstring>
 
 namespace lighttpning {
 
-    StringBuffer::StringBuffer() { }
-
-    StringBuffer::StringBuffer(size_t capacity):
-        bufferCapacity(capacity)
+    StringBuffer::StringBuffer(size_t capacity)
     {
-        reserve(bufferCapacity);
+        reserve(capacity);
     }
+
+    StringBuffer::StringBuffer(const StringBuffer& other)
+    {
+        // NOTE: For new buffer we allocate other.bufferSize, but NOT other.bufferCapacity
+        reserve(other.bufferSize);
+        memcpy(buffer, other.buffer, other.bufferSize);
+    }
+
+//    StringBuffer& StringBuffer::operator =(StringBuffer other) {
+//        return *this;
+//    }
 
     StringBuffer::~StringBuffer() {
         free(buffer);
@@ -49,35 +58,30 @@ namespace lighttpning {
         return bufferCapacity;
     }
 
-    bool StringBuffer::reserve(size_t newCapacity) {
-
-        bool success = true;
+    void StringBuffer::reserve(size_t newCapacity) {
 
         if (newCapacity > 0) {
 
-            void* newBuffer = realloc(buffer, newCapacity);
-            if (newBuffer != nullptr) {
-                buffer = (char*)newBuffer;
-            } else {
-                success = false;
+            char* newBuffer = (char*)realloc(buffer, newCapacity);
+
+            if (newBuffer == nullptr) {
+                throw RuntimeError::OutOfMemory();
             }
 
-        } else {
-            free(buffer);
-            buffer = nullptr;
-        }
+            buffer = newBuffer;
 
-        if (success) {
             bufferCapacity = newCapacity;
             if (bufferSize > bufferCapacity) {
                 bufferSize = bufferCapacity;
             }
+
+        } else { // newCapacity =< 0
+            throw RuntimeError::BadArgument();
         }
 
-        return success;
     }
 
-    bool StringBuffer::shrink() {
+    void StringBuffer::shrink() {
         return reserve(bufferSize);
     }
 
