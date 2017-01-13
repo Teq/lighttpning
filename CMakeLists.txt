@@ -33,11 +33,20 @@ set(LIGHTTPNING_SOURCES
     src/lighttpning.h
 )
 
+set(LIGHTTPNING_TESTS
+    test/main.cpp
+    test/string_buffer.cpp
+)
+
+include_directories(
+    src/
+)
+
 add_library(liblighttpning ${LIGHTTPNING_SOURCES})
 
 add_executable(lighttpning samples/main.cpp)
 target_link_libraries (lighttpning liblighttpning)
 
-add_executable(lighttpning_test test/main.cpp)
+add_executable(lighttpning_test ${LIGHTTPNING_TESTS})
 target_link_libraries (lighttpning_test liblighttpning)
 

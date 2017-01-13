@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../http/request.h"
-#include "../misc/string_view.h"
+#include "http/request.h"
+#include "misc/string_view.h"
 
 namespace lighttpning {
 

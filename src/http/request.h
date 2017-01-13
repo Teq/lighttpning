@@ -1,8 +1,8 @@
 #pragma once
 
 #include "connection.h"
-#include "../misc/string_buffer.h"
-#include "../misc/string_view.h"
+#include "misc/string_buffer.h"
+#include "misc/string_view.h"
 
 #include <vector>
 

@@ -1,8 +1,8 @@
 #include <fstream>
 #include <string>
 
-#include "../src/lighttpning.h"
-#include "../src/http/stream_connection.h"
+#include "lighttpning.h"
+#include "http/stream_connection.h"
 
 using namespace lighttpning;
 

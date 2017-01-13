@@ -1,5 +1,5 @@
 #include "string_buffer.h"
-#include "../exceptions/runtime_error.h"
+#include "exceptions/runtime_error.h"
 
 #include <cstring>
 
