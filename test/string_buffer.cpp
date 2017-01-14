@@ -2,14 +2,27 @@
 
 #include "catch.hpp"
 
-unsigned int Factorial( unsigned int number ) {
-    return number > 1 ? Factorial(number-1)*number : 1;
-}
+using namespace Lighttpning;
 
-TEST_CASE( "Factorials are computed", "[factorial]" ) {
-    REQUIRE( Factorial(0) == 1 );
-    REQUIRE( Factorial(1) == 1 );
-    REQUIRE( Factorial(2) == 2 );
-    REQUIRE( Factorial(3) == 6 );
-    REQUIRE( Factorial(10) == 3628800 );
+SCENARIO("StringBuffer can be sized and resized") {
+    GIVEN("StringBuffer with N items") {
+        StringBuffer strbuff(12);
+
+        REQUIRE(strbuff.size() == 0);
+        REQUIRE(strbuff.capacity() >= 12);
+
+        WHEN("the size is increased") {
+            strbuff.resize(20);
+            THEN("the size and capacity change") {
+                REQUIRE(strbuff.size() == 20);
+                REQUIRE(strbuff.capacity() >= 20);
+            }
+
+        }
+
+        WHEN("the size is reduced") {}
+        WHEN("the capacity is increased") {}
+        WHEN("the capacity is reduced") {}
+
+    }
 }
