@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-namespace lighttpning {
+namespace Lighttpning {
 
     class StreamConnection : public Connection {
     public:

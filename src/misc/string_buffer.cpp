@@ -3,7 +3,7 @@
 
 #include <cstring>
 
-namespace lighttpning {
+namespace Lighttpning {
 
     StringBuffer::StringBuffer(size_t capacity)
     {

@@ -1,6 +1,6 @@
 #include "request.h"
 
-namespace lighttpning {
+namespace Lighttpning {
 
     Request::Request(ConnectionIn& in):
         connection(in),

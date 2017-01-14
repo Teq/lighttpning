@@ -1,6 +1,6 @@
 #include "router.h"
 
-namespace lighttpning {
+namespace Lighttpning {
 
     Router::~Router() {
         for (auto route : routes) {

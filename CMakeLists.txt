@@ -29,8 +29,8 @@ set(LIGHTTPNING_SOURCES
     src/misc/string_buffer.h
     src/misc/string_view.cpp
     src/misc/string_view.h
-    src/lighttpning.cpp
-    src/lighttpning.h
+    src/request_handler.cpp
+    src/request_handler.h
 )
 
 set(LIGHTTPNING_TESTS

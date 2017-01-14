@@ -1,10 +1,10 @@
 #include <fstream>
 #include <string>
 
-#include "lighttpning.h"
+#include "request_handler.h"
 #include "http/stream_connection.h"
 
-using namespace lighttpning;
+using namespace Lighttpning;
 
 class Functor { // for tests
 
@@ -59,7 +59,7 @@ int main() {
 
 //    std::cout << std::is_base_of<Middleware, MiddlewareFunction<int>>::value << std::endl;
 
-    Lighttpning app;
+    RequestHandler app;
 
 //    Functor f(23);
 

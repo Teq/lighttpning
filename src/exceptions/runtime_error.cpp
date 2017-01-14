@@ -1,6 +1,6 @@
 #include "runtime_error.h"
 
-namespace lighttpning {
+namespace Lighttpning {
 
     RuntimeError::RuntimeError(Cause c): cause(c) { }
 

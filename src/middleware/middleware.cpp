@@ -1,6 +1,6 @@
 #include "middleware.h"
 
-namespace lighttpning {
+namespace Lighttpning {
 
     void Middleware::setNext(const Middleware& middleware) {
         next = &middleware;

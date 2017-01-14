@@ -5,7 +5,7 @@
 
 #include <vector>
 
-namespace lighttpning {
+namespace Lighttpning {
 
     class MiddlewareChain : public Middleware {
 

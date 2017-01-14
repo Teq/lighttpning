@@ -2,7 +2,7 @@
 
 #include "middleware.h"
 
-namespace lighttpning {
+namespace Lighttpning {
 
     template<typename Function>
     class MiddlewareFunction : public Middleware {

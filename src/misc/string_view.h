@@ -2,7 +2,7 @@
 
 #include <cstdlib>
 
-namespace lighttpning {
+namespace Lighttpning {
 
     class StringView {
 

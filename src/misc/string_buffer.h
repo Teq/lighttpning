@@ -2,7 +2,7 @@
 
 #include <cstdlib>
 
-namespace lighttpning {
+namespace Lighttpning {
 
     class StringBuffer { // TODO: Implement according to The Rule Of Three/Four
 

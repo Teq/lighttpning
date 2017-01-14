@@ -6,28 +6,28 @@
 #include "middleware/middleware_chain.h"
 #include "middleware/router.h"
 
-namespace lighttpning {
+namespace Lighttpning {
 
-    class Lighttpning : private MiddlewareChain {
+    class RequestHandler : private MiddlewareChain {
 
     public:
 
-        ~Lighttpning();
+        ~RequestHandler();
 
         void handle(Connection&);
 
         template<typename Function>
-        Lighttpning& router(const Function& filler) {
+        RequestHandler& router(const Function& filler) {
             auto router = new Router();
             owned.push_back(router);
             filler(*router);
             return use((Middleware&)*router); // explicit cast to use non-template overload: use(Middleware&)
         }
 
-        Lighttpning& use(Middleware&);
+        RequestHandler& use(Middleware&);
 
         template<typename Function>
-        Lighttpning& use(Function&& function) {
+        RequestHandler& use(Function&& function) {
             MiddlewareChain::use(std::forward<Function>(function));
             return *this;
         }

@@ -1,6 +1,6 @@
 #include "middleware_chain.h"
 
-namespace lighttpning {
+namespace Lighttpning {
 
     MiddlewareChain::~MiddlewareChain() {
         for (auto middleware : owned) {

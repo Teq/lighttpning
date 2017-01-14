@@ -2,7 +2,7 @@
 
 #include <cstring>
 
-namespace lighttpning {
+namespace Lighttpning {
 
     StringView::StringView(const char* buffer, size_t size):
         viewPtr(buffer),

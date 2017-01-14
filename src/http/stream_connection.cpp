@@ -1,6 +1,6 @@
 #include "stream_connection.h"
 
-namespace lighttpning {
+namespace Lighttpning {
 
     StreamConnection::StreamConnection(std::istream& in, std::ostream& out):
         input(in),

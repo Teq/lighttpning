@@ -1,20 +1,20 @@
-#include "lighttpning.h"
+#include "request_handler.h"
 
-namespace lighttpning {
+namespace Lighttpning {
 
-    Lighttpning::~Lighttpning() {
+    RequestHandler::~RequestHandler() {
         for (auto middleware : owned) {
             delete middleware;
         }
     }
 
-    void Lighttpning::handle(Connection& connection) {
+    void RequestHandler::handle(Connection& connection) {
         Request request(connection);
         Response response(connection);
         call(request, response);
     }
 
-    Lighttpning& Lighttpning::use(Middleware& middleware) {
+    RequestHandler& RequestHandler::use(Middleware& middleware) {
         MiddlewareChain::use(middleware);
         return *this;
     }

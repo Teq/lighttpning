@@ -1,6 +1,6 @@
 #include "response.h"
 
-namespace lighttpning {
+namespace Lighttpning {
 
     Response::Response(const ConnectionOut& out):
         connection(out)

@@ -1,6 +1,6 @@
 #include "route.h"
 
-namespace lighttpning {
+namespace Lighttpning {
 
     Route::Route(Request::Method method, StringView&& pattern):
         method(method),

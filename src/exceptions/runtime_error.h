@@ -1,6 +1,6 @@
 #pragma once
 
-namespace lighttpning {
+namespace Lighttpning {
 
     class RuntimeError {
 

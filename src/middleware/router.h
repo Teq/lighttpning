@@ -6,7 +6,7 @@
 
 #include <unordered_map>
 
-namespace lighttpning {
+namespace Lighttpning {
 
     class Router : public Middleware {
 

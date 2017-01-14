@@ -6,7 +6,7 @@
 
 #include <vector>
 
-namespace lighttpning {
+namespace Lighttpning {
 
     /**
      * Represents HTTP request

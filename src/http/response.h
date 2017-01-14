@@ -2,7 +2,7 @@
 
 #include "connection.h"
 
-namespace lighttpning {
+namespace Lighttpning {
     
     class Response {
         

@@ -3,7 +3,7 @@
 #include "http/request.h"
 #include "http/response.h"
 
-namespace lighttpning {
+namespace Lighttpning {
 
     class Middleware {
         
