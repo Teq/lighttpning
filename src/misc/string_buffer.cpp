@@ -10,12 +10,12 @@ namespace Lighttpning {
         reserve(capacity);
     }
 
-    StringBuffer::StringBuffer(const StringBuffer& other)
-    {
-        // NOTE: For new buffer we allocate other.bufferSize, but NOT other.bufferCapacity
-        reserve(other.bufferSize);
-        memcpy(buffer, other.buffer, other.bufferSize);
-    }
+//    StringBuffer::StringBuffer(const StringBuffer& other)
+//    {
+//        // NOTE: For new buffer we allocate other.bufferSize, but NOT other.bufferCapacity
+//        reserve(other.bufferSize);
+//        memcpy(buffer, other.buffer, other.bufferSize);
+//    }
 
 //    StringBuffer& StringBuffer::operator =(StringBuffer other) {
 //        return *this;
@@ -33,24 +33,27 @@ namespace Lighttpning {
         bufferSize = 0;
     }
 
-//    void operator += (char c) {
-//        buf[buf_cur++] = c;
-//        if (buf_cur >= buf_len) {
-//            buf_len *= 1.5;
-//            void* newPtr = realloc(buf, buf_len);
-//            if (newPtr == nullptr) {
-//                throw new std::runtime_error("Unable to allocate memory");
-//            } else {
-//                buf = (char*)newPtr;
-//            }
-//        }
-//    }
+    void StringBuffer::operator += (const char ch) {
+        if (bufferCapacity == bufferSize) {
+            reserve(bufferCapacity + 1);
+        }
+        buffer[bufferSize++] = ch;
+    }
 
-    bool StringBuffer::operator ==(const StringBuffer& other) const {
+    void StringBuffer::operator += (const char* cStr) {
+        size_t lenght = strlen(cStr);
+        if (bufferSize + lenght >= bufferCapacity) {
+            reserve(bufferSize + lenght);
+        }
+        memcpy(buffer + bufferSize, cStr, lenght);
+        bufferSize += lenght;
+    }
+
+    bool StringBuffer::operator == (const StringBuffer& other) const {
         return strncmp(buffer, other.buff(), bufferSize) == 0;
     }
 
-    bool StringBuffer::operator ==(const char* other) const {
+    bool StringBuffer::operator == (const char* other) const {
         return strncmp(buffer, other, bufferSize) == 0;
     }
 
@@ -89,14 +92,13 @@ namespace Lighttpning {
         return bufferSize;
     }
 
-    bool StringBuffer::resize(size_t newSize) {
+    void StringBuffer::resize(size_t newSize) {
 
-        if (newSize <= bufferCapacity) {
-            bufferSize = newSize;
-            return true;
+        if (newSize > bufferCapacity) {
+            reserve(newSize);
         }
 
-        return false;
+        bufferSize = newSize;
     }
 
     char* StringBuffer::buff() const {
