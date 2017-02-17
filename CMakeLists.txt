@@ -36,6 +36,7 @@ set(LIGHTTPNING_SOURCES
 set(LIGHTTPNING_TESTS
     test/main.cpp
     test/string_buffer.cpp
+    test/middleware.cpp
 )
 
 include_directories(

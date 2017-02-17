@@ -13,7 +13,7 @@ namespace Lighttpning {
         if (method == Method::UNKNOWN) {
 
             // read until space
-            size_t size = connection.read(requestLineBuffer.buff(), MAX_HTTP_METHOD_STR_SIZE, ' ');
+            size_t size = connection.read(requestLineBuffer.ptr(), MAX_HTTP_METHOD_STR_SIZE, ' ');
             // set actual size (excluding space character)
             requestLineBuffer.resize(size - 1);
 
@@ -51,7 +51,7 @@ namespace Lighttpning {
         if (requestLineBuffer.empty()) {
 
             // read until space
-            size_t size = connection.read(requestLineBuffer.buff(), MAX_HTTP_PATH_STR_SIZE, ' ');
+            size_t size = connection.read(requestLineBuffer.ptr(), MAX_HTTP_PATH_STR_SIZE, ' ');
             // set actual size (excluding space character)
             requestLineBuffer.resize(size - 1);
 
@@ -60,7 +60,7 @@ namespace Lighttpning {
             connection.skip('\n', MAX_HTTP_VERSION_STR_SIZE);
         }
 
-        return StringView(requestLineBuffer.buff(), requestLineBuffer.size());
+        return StringView(requestLineBuffer.ptr(), requestLineBuffer.size());
     }
 
     const StringView& Request::getParameter(size_t index) const {

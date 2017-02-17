@@ -5,24 +5,21 @@
 
 namespace Lighttpning {
 
-    StringBuffer::StringBuffer(size_t capacity)
-    {
+    StringBuffer::StringBuffer(size_t capacity) {
         reserve(capacity);
     }
 
-//    StringBuffer::StringBuffer(const StringBuffer& other)
-//    {
-//        // NOTE: For new buffer we allocate other.bufferSize, but NOT other.bufferCapacity
-//        reserve(other.bufferSize);
-//        memcpy(buffer, other.buffer, other.bufferSize);
-//    }
-
-//    StringBuffer& StringBuffer::operator =(StringBuffer other) {
-//        return *this;
-//    }
-
     StringBuffer::~StringBuffer() {
-        free(buffer);
+        free(bufferPtr);
+    }
+
+    StringBuffer::StringBuffer(StringBuffer&& other) {
+        bufferPtr = other.bufferPtr;
+        bufferCapacity = other.bufferCapacity;
+        bufferSize = other.bufferSize;
+        other.bufferPtr = nullptr;
+        other.bufferCapacity = 0;
+        other.bufferSize = 0;
     }
 
     bool StringBuffer::empty() const {
@@ -34,27 +31,30 @@ namespace Lighttpning {
     }
 
     void StringBuffer::operator += (const char ch) {
-        if (bufferCapacity == bufferSize) {
-            reserve(bufferCapacity + 1);
+        size_t newSize = bufferSize + 1;
+        if (bufferCapacity < newSize) {
+            reserve(newSize);
         }
-        buffer[bufferSize++] = ch;
+        bufferSize = newSize;
+        bufferPtr[bufferSize] = ch;
     }
 
     void StringBuffer::operator += (const char* cStr) {
         size_t lenght = strlen(cStr);
-        if (bufferSize + lenght >= bufferCapacity) {
-            reserve(bufferSize + lenght);
+        size_t newSize = bufferSize + lenght;
+        if (bufferCapacity < newSize) {
+            reserve(newSize);
         }
-        memcpy(buffer + bufferSize, cStr, lenght);
-        bufferSize += lenght;
+        memcpy(bufferPtr + bufferSize, cStr, lenght);
+        bufferSize = newSize;
     }
 
     bool StringBuffer::operator == (const StringBuffer& other) const {
-        return strncmp(buffer, other.buff(), bufferSize) == 0;
+        return strncmp(bufferPtr, other.ptr(), bufferSize) == 0;
     }
 
     bool StringBuffer::operator == (const char* other) const {
-        return strncmp(buffer, other, bufferSize) == 0;
+        return strncmp(bufferPtr, other, bufferSize) == 0;
     }
 
     size_t StringBuffer::capacity() const {
@@ -65,13 +65,13 @@ namespace Lighttpning {
 
         if (newCapacity > 0) {
 
-            char* newBuffer = (char*)realloc(buffer, newCapacity);
+            char* newBuffer = (char*)realloc(bufferPtr, newCapacity);
 
             if (newBuffer == nullptr) {
                 throw RuntimeError::OutOfMemory();
             }
 
-            buffer = newBuffer;
+            bufferPtr = newBuffer;
 
             bufferCapacity = newCapacity;
             if (bufferSize > bufferCapacity) {
@@ -101,8 +101,8 @@ namespace Lighttpning {
         bufferSize = newSize;
     }
 
-    char* StringBuffer::buff() const {
-        return buffer;
+    char* StringBuffer::ptr() const {
+        return bufferPtr;
     }
 
 }

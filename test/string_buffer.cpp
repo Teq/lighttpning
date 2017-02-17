@@ -5,11 +5,58 @@
 
 using namespace Lighttpning;
 
-//SCENARIO("StringBuffer can be copy/move constructed/assigned and destructed properly") {}
+SCENARIO("StringBuffer is moved or copied") {
+
+    GIVEN("an empty buffer with default (zero) capacity") {
+
+        StringBuffer strbuff;
+        REQUIRE(strbuff.ptr() == nullptr);
+
+        WHEN("moved") {
+
+            StringBuffer moved(std::move(strbuff));
+
+            THEN("resulting buffers should point to null") {
+                REQUIRE(moved.ptr() == nullptr);
+            }
+
+        }
+
+
+    }
+
+    GIVEN("non-empty buffer") {
+
+        StringBuffer strbuff;
+        strbuff += "Hello world";
+
+        REQUIRE(strbuff.ptr() != nullptr);
+
+        WHEN("it is moved") {
+
+            char* ptr = strbuff.ptr();
+            size_t size = strbuff.size();
+            size_t capacity = strbuff.capacity();
+
+            StringBuffer moved(std::move(strbuff));
+
+            THEN("all resources should be moved to new object") {
+                REQUIRE(strbuff.ptr() == nullptr);
+                REQUIRE(strbuff.size() == 0);
+                REQUIRE(strbuff.capacity() == 0);
+                REQUIRE(moved.ptr() == ptr);
+                REQUIRE(moved.size() == size);
+                REQUIRE(moved.capacity() == capacity);
+            }
+        }
+
+    }
+
+}
 
 SCENARIO("StringBuffer can change its capacity and size") {
 
-    GIVEN("empty buffer with default (zero) capacity") {
+    GIVEN("an empty buffer with default (zero) capacity") {
 
         StringBuffer strbuff;
 
@@ -43,7 +90,7 @@ SCENARIO("StringBuffer can change its capacity and size") {
 
     }
 
-    GIVEN("empty buffer with capacity of N items") {
+    GIVEN("an empty buffer with capacity of N items") {
 
         const size_t N = 12;
         StringBuffer strbuff(N);

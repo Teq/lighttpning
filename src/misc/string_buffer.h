@@ -8,23 +8,17 @@ namespace Lighttpning {
 
     public:
 
-        // ctors, assignment operators, dtor
-
         StringBuffer() = default;
-
         StringBuffer(size_t capacity);
-
-        StringBuffer(const StringBuffer& other); // copy
-
-        StringBuffer(StringBuffer&& other); // move
-
-        StringBuffer& operator =(StringBuffer other); // copy-and-swap
-
-        StringBuffer& operator =(StringBuffer&& other); // move assignment
-
         ~StringBuffer();
 
-        // methods
+        // non-copyable
+        StringBuffer(const StringBuffer&) = delete;
+        StringBuffer& operator = (const StringBuffer&) = delete;
+
+        // movable, but not move-assignable
+        StringBuffer(StringBuffer&&);
+        StringBuffer& operator = (StringBuffer&&) = delete;
 
         /**
          * @brief Append character to the buffer
@@ -88,13 +82,13 @@ namespace Lighttpning {
         /**
          * @return Pointer to internal buffer
          */
-        char* buff() const;
+        char* ptr() const;
 
     private:
 
         size_t bufferCapacity = 0;
         size_t bufferSize = 0;
-        char* buffer = nullptr;
+        char* bufferPtr = nullptr;
 
     };
 
